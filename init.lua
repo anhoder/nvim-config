@@ -3,6 +3,8 @@ require("config.lazy")
 
 vim.o.guifont = "ComicMono NF:h16"
 vim.opt.linespace = 2
+vim.opt.shiftwidth = 4
+vim.opt.expandtab = true
 
 vim.g.neovide_transparency = 0.95
 vim.g.transparency = 0.95
