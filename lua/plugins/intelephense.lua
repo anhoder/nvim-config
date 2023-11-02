@@ -4,7 +4,14 @@ return {
     opts = {
       servers = {
         intelephense = {},
-        phpactor = {},
+        phpactor = {
+          filetypes = { "php", "blade" },
+          init_options = {
+            ["language_server.diagnostics_on_open"] = false,
+            ["language_server.diagnostics_on_save"] = false,
+            ["language_server.diagnostics_on_update"] = false,
+          },
+        },
       },
     },
   },
