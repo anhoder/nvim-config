@@ -16,7 +16,7 @@ return {
       "flake8",
       "hadolint",
       "html-lsp",
-      -- "intelephense",
+      "intelephense",
       "phpactor",
       "nginx-language-server",
       "php-debug-adapter",
