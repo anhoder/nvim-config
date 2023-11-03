@@ -1,10 +1,12 @@
 -- bootstrap lazy.nvim, LazyVim and your plugins
 require("config.lazy")
 
-vim.o.guifont = "ComicMono NF:h16"
-vim.opt.linespace = 2
-vim.opt.shiftwidth = 4
-vim.opt.expandtab = true
+vim.opt.guifont = "ComicMono NF:h15"
+vim.opt.linespace = 6
+-- vim.opt.guifont = "FiraCode Nerd Font Mono:h15"
+-- vim.opt.guifont = "MesloLGLDZ Nerd Font Mono:h15"
+vim.opt.fileencoding = "utf-8"
+vim.opt.filetype = "on"
 
 vim.g.neovide_transparency = 0.95
 vim.g.transparency = 0.95

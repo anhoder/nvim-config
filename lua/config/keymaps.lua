@@ -16,7 +16,22 @@ map({ "n", "i", "v" }, "<C-A-Down>", "<C-w>j", { desc = "Go to lower window", re
 map({ "n", "i", "v" }, "<C-A-Up>", "<C-w>k", { desc = "Go to upper window", remap = true })
 map({ "n", "i", "v" }, "<C-A-Right>", "<C-w>l", { desc = "Go to right window", remap = true })
 
+-- Copy, paste, cut
 map({ "n", "v" }, "<D-c>", '"+y', { desc = "Copy", noremap = true })
 map({ "n", "v" }, "<D-v>", '"+p', { desc = "Paste", noremap = true })
 map({ "n", "v" }, "<D-x>", '"+x', { desc = "Cut", noremap = true })
 map("i", "<D-c>", "<C-r>+", { desc = "Paste", noremap = true })
+
+-- Move to beginning/end of line
+map({ "n", "v", "i" }, "<D-Left>", "<Home>", { desc = "Beginning of line" })
+map({ "n", "v", "i" }, "<D-Right>", "<End>", { desc = "End of line" })
+
+-- Select
+map({ "n", "i", "v" }, "<D-S-Left>", "<Esc>v<Home>", { desc = "Select to beginning of line" })
+map({ "n", "i", "v" }, "<D-S-Right>", "<Esc>v<End>", { desc = "Select to end of line" })
+
+-- Comment
+map({ "i", "n" }, "<D-/>", function()
+  return "<Esc>" .. MiniComment.operator() .. "_"
+end, { expr = true, desc = "Comment" })
+map("v", "<D-/>", [[:<c-u>lua MiniComment.operator('visual')<cr>]], { desc = "Comment selection" })
