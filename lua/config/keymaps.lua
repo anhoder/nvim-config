@@ -35,3 +35,8 @@ map({ "i", "n" }, "<D-/>", function()
   return "<Esc>" .. MiniComment.operator() .. "_"
 end, { expr = true, desc = "Comment" })
 map("v", "<D-/>", [[:<c-u>lua MiniComment.operator('visual')<cr>]], { desc = "Comment selection" })
+
+-- Document symbols
+map({ "i", "n", "v" }, "<D-m>", function()
+  require("telescope.builtin").lsp_document_symbols({ symbols = require("lazyvim.config").get_kind_filter() })
+end, { desc = "Document symbols" })
