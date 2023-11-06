@@ -16,6 +16,9 @@ map({ "n", "i", "v" }, "<C-A-Down>", "<C-w>j", { desc = "Go to lower window", re
 map({ "n", "i", "v" }, "<C-A-Up>", "<C-w>k", { desc = "Go to upper window", remap = true })
 map({ "n", "i", "v" }, "<C-A-Right>", "<C-w>l", { desc = "Go to right window", remap = true })
 
+-- Save
+map({ "n", "i", "v" }, "<D-s>", "<cmd>w<cr>", { desc = "Save" })
+
 -- Copy, paste, cut
 map({ "n", "v", "c" }, "<D-c>", '"+y', { desc = "Copy", noremap = true })
 map({ "n", "v", "c" }, "<D-v>", '"+p', { desc = "Paste", noremap = true })
