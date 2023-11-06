@@ -20,7 +20,7 @@ map({ "n", "i", "v" }, "<C-A-Right>", "<C-w>l", { desc = "Go to right window", r
 map({ "n", "v" }, "<D-c>", '"+y', { desc = "Copy", noremap = true })
 map({ "n", "v" }, "<D-v>", '"+p', { desc = "Paste", noremap = true })
 map({ "n", "v" }, "<D-x>", '"+x', { desc = "Cut", noremap = true })
-map("i", "<D-c>", "<C-r>+", { desc = "Paste", noremap = true })
+map("i", "<D-v>", "<C-r>+", { desc = "Paste", noremap = true })
 
 -- Move to beginning/end of line
 map({ "n", "v", "i" }, "<D-Left>", "<Home>", { desc = "Beginning of line" })

@@ -2,9 +2,12 @@ return {
   {
     "olimorris/persisted.nvim",
     opts = {
-      autoload = true,
+      autosave = true,
       should_autosave = function()
-        return vim.g.persisted_loaded_session ~= ""
+        if not vim.g.persisted_loaded_session then
+          return false
+        end
+        return true
       end,
     },
   },
