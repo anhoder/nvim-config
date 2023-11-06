@@ -3,7 +3,9 @@ return {
     "olimorris/persisted.nvim",
     opts = {
       autoload = true,
-      autosave = false,
+      should_autosave = function()
+        return vim.g.persisted_loaded_session ~= ""
+      end,
     },
   },
 }
