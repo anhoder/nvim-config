@@ -40,3 +40,6 @@ map("v", "<D-/>", [[:<c-u>lua MiniComment.operator('visual')<cr>]], { desc = "Co
 map({ "i", "n", "v" }, "<D-m>", function()
   require("telescope.builtin").lsp_document_symbols({ symbols = require("lazyvim.config").get_kind_filter() })
 end, { desc = "Document symbols" })
+
+-- goto
+map({ "i", "n", "v" }, "<D-LeftMouse>", "<C-]>", { desc = "Go to definition" })
