@@ -5,8 +5,9 @@ vim.opt.guifont = "ComicMono NF:h15"
 vim.opt.linespace = 6
 -- vim.opt.guifont = "FiraCode Nerd Font Mono:h15"
 -- vim.opt.guifont = "MesloLGLDZ Nerd Font Mono:h15"
-vim.opt.fileencoding = "utf-8"
+-- vim.opt.fileencoding = "utf-8"
 vim.opt.filetype = "on"
+vim.opt.ignorecase = true
 
 vim.g.neovide_transparency = 0.95
 vim.g.transparency = 0.95
