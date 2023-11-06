@@ -1,4 +1,8 @@
 return {
-  "olimorris/persisted.nvim",
-  config = true,
+  {
+    "olimorris/persisted.nvim",
+    opts = {
+      autoload = true,
+    },
+  },
 }
