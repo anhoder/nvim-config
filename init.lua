@@ -1,7 +1,7 @@
 -- bootstrap lazy.nvim, LazyVim and your plugins
 require("config.lazy")
 
-vim.opt.guifont = "FiraCode NF:h18"
+vim.opt.guifont = "FiraCode NF:h16"
 vim.opt.linespace = 0
 -- vim.opt.guifont = "FiraCode Nerd Font Mono:h15"
 -- vim.opt.guifont = "MesloLGLDZ Nerd Font Mono:h15"
