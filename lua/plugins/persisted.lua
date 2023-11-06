@@ -1,6 +1,6 @@
 return {
   {
-    "olimorris/persisted.nvim",
+    "anhoder/persisted.nvim",
     opts = {
       autosave = true,
       should_autosave = function()
