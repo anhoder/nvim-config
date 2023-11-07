@@ -10,7 +10,7 @@ return {
         hide_by_name = {
           ".git",
           ".idea",
-          ".vscode",
+          -- ".vscode",
           ".fleet",
           ".DS_Store",
         },
