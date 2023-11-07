@@ -9,6 +9,7 @@ vim.opt.guifont = "ComicMono NF:h16"
 vim.opt.filetype = "on"
 vim.opt.ignorecase = true
 vim.opt.sessionoptions = "buffers,curdir,folds,globals,tabpages,terminal,winpos,winsize"
+vim.opt.swapfile = false
 
 vim.g.neovide_transparency = 0.95
 vim.g.transparency = 0.95
