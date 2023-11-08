@@ -10,20 +10,37 @@ map({ "n", "i", "v" }, "<C-D-Down>", "<cmd>resize -2<cr>", { desc = "Decrease wi
 map({ "n", "i", "v" }, "<C-D-Left>", "<cmd>vertical resize -2<cr>", { desc = "Decrease window width" })
 map({ "n", "i", "v" }, "<C-D-Right>", "<cmd>vertical resize +2<cr>", { desc = "Increase window width" })
 
+map({ "n", "i", "v" }, "<C-D-S-Up>", "<cmd>resize +2<cr>", { desc = "Increase window height" })
+map({ "n", "i", "v" }, "<C-D-S-Down>", "<cmd>resize -2<cr>", { desc = "Decrease window height" })
+map({ "n", "i", "v" }, "<C-D-S-Left>", "<cmd>vertical resize -2<cr>", { desc = "Decrease window width" })
+map({ "n", "i", "v" }, "<C-D-S-Right>", "<cmd>vertical resize +2<cr>", { desc = "Increase window width" })
+
 -- Move to window using the <ctrl> hjkl keys
 map({ "n", "i", "v" }, "<C-A-Left>", "<C-w>h", { desc = "Go to left window", remap = true })
 map({ "n", "i", "v" }, "<C-A-Down>", "<C-w>j", { desc = "Go to lower window", remap = true })
 map({ "n", "i", "v" }, "<C-A-Up>", "<C-w>k", { desc = "Go to upper window", remap = true })
 map({ "n", "i", "v" }, "<C-A-Right>", "<C-w>l", { desc = "Go to right window", remap = true })
 
+map({ "n", "i", "v" }, "<C-A-S-Left>", "<C-w>h", { desc = "Go to left window", remap = true })
+map({ "n", "i", "v" }, "<C-A-S-Down>", "<C-w>j", { desc = "Go to lower window", remap = true })
+map({ "n", "i", "v" }, "<C-A-S-Up>", "<C-w>k", { desc = "Go to upper window", remap = true })
+map({ "n", "i", "v" }, "<C-A-S-Right>", "<C-w>l", { desc = "Go to right window", remap = true })
+
 -- Save
 map({ "n", "i", "v" }, "<D-s>", "<cmd>w<cr>", { desc = "Save" })
+map({ "n", "i", "v", "s" }, "<D-z>", "<cmd>undo<cr>", { desc = "Undo" })
+map({ "n", "i", "v", "s" }, "<D-S-z>", "<cmd>redo<cr>", { desc = "Redo" })
 
 -- Copy, paste, cut
 map({ "n", "v" }, "<D-c>", '"+y', { desc = "Copy", noremap = true })
 map({ "n", "v" }, "<D-v>", '"+p', { desc = "Paste", noremap = true })
 map({ "n", "v" }, "<D-x>", '"+x', { desc = "Cut", noremap = true })
 map({ "i", "c" }, "<D-v>", "<C-r>+", { desc = "Paste", noremap = true })
+
+map({ "n", "v" }, "<D-S-c>", '"+y', { desc = "Copy", noremap = true })
+map({ "n", "v" }, "<D-S-v>", '"+p', { desc = "Paste", noremap = true })
+map({ "n", "v" }, "<D-S-x>", '"+x', { desc = "Cut", noremap = true })
+map({ "i", "c" }, "<D-S-v>", "<C-r>+", { desc = "Paste", noremap = true })
 
 -- Move to beginning/end of line
 map({ "n", "v", "i" }, "<D-Left>", "<Home>", { desc = "Beginning of line" })
@@ -43,6 +60,3 @@ map("v", "<D-/>", [[:<c-u>lua MiniComment.operator('visual')<cr>]], { desc = "Co
 map({ "i", "n", "v" }, "<D-m>", function()
   require("telescope.builtin").lsp_document_symbols({ symbols = require("lazyvim.config").get_kind_filter() })
 end, { desc = "Document symbols" })
-
--- goto
-map({ "i", "n", "v" }, "<D-LeftMouse>", "<C-]>", { desc = "Go to definition" })
