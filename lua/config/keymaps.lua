@@ -28,8 +28,12 @@ map({ "n", "i", "v" }, "<C-A-S-Right>", "<C-w>l", { desc = "Go to right window",
 
 -- Save
 map({ "n", "i", "v" }, "<D-s>", "<cmd>w<cr>", { desc = "Save" })
-map({ "n", "i", "v", "s" }, "<D-z>", "<cmd>undo<cr>", { desc = "Undo" })
-map({ "n", "i", "v", "s" }, "<D-S-z>", "<cmd>redo<cr>", { desc = "Redo" })
+map({ "n", "i", "v", "s", "c" }, "<D-z>", "<cmd>undo<cr>", { desc = "Undo" })
+map({ "n", "i", "v", "s", "c" }, "<D-S-z>", "<cmd>redo<cr>", { desc = "Redo" })
+
+-- Dup one line
+map({ "n", "v" }, "<D-d>", "<Esc>yyp", { desc = "Paste", noremap = true })
+map({ "i" }, "<D-d>", "<Esc>yypi", { desc = "Paste", noremap = true })
 
 -- Copy, paste, cut
 map({ "n", "v" }, "<D-c>", '"+y', { desc = "Copy", noremap = true })
@@ -43,12 +47,14 @@ map({ "n", "v" }, "<D-S-x>", '"+x', { desc = "Cut", noremap = true })
 map({ "i", "c" }, "<D-S-v>", "<C-r>+", { desc = "Paste", noremap = true })
 
 -- Move to beginning/end of line
-map({ "n", "v", "i" }, "<D-Left>", "<Home>", { desc = "Beginning of line" })
-map({ "n", "v", "i" }, "<D-Right>", "<End>", { desc = "End of line" })
+map({ "n", "v" }, "<D-Left>", "^", { desc = "Beginning of line" })
+map({ "n", "v" }, "<D-Right>", "$", { desc = "End of line" })
+map({ "i" }, "<D-Left>", "<Esc>^i", { desc = "Beginning of line" })
+map({ "i" }, "<D-Right>", "<Esc>$a", { desc = "End of line" })
 
 -- Select
-map({ "n", "i", "v" }, "<D-S-Left>", "<Esc>v<Home>", { desc = "Select to beginning of line" })
-map({ "n", "i", "v" }, "<D-S-Right>", "<Esc>v<End>", { desc = "Select to end of line" })
+map({ "n", "i", "v" }, "<D-S-Left>", "<Esc>v^", { desc = "Select to beginning of line" })
+map({ "n", "i", "v" }, "<D-S-Right>", "<Esc>v$", { desc = "Select to end of line" })
 
 -- Comment
 map({ "i", "n" }, "<D-/>", function()
