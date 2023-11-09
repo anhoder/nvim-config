@@ -66,3 +66,13 @@ map("v", "<D-/>", [[:<c-u>lua MiniComment.operator('visual')<cr>]], { desc = "Co
 map({ "i", "n", "v" }, "<D-m>", function()
   require("telescope.builtin").lsp_document_symbols({ symbols = require("lazyvim.config").get_kind_filter() })
 end, { desc = "Document symbols" })
+
+-- Increase, Decrease Font Size
+map({ "i", "n", "v", "s", "t", "o" }, "<C-=>", function()
+  vim.g.guifontsize = vim.g.guifontsize + 1
+  vim.cmd("set guifont=" .. vim.g.guifont .. ":h" .. vim.g.guifontsize)
+end, { desc = "Increase font size" })
+map({ "i", "n", "v", "s", "t", "o" }, "<C-->", function()
+  vim.g.guifontsize = vim.g.guifontsize - 1
+  vim.cmd("set guifont=" .. vim.g.guifont .. ":h" .. vim.g.guifontsize)
+end, { desc = "Increase font size" })
