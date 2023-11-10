@@ -4,6 +4,8 @@
 
 local map = vim.keymap.set
 
+-- n normal, i insert, v visual, s select, c command, t terminal, o operator pending
+
 -- Resize window using <ctrl> arrow keys
 map({ "n", "i", "v" }, "<C-D-Up>", "<cmd>resize +2<cr>", { desc = "Increase window height" })
 map({ "n", "i", "v" }, "<C-D-Down>", "<cmd>resize -2<cr>", { desc = "Decrease window height" })
@@ -16,15 +18,15 @@ map({ "n", "i", "v" }, "<C-D-S-Left>", "<cmd>vertical resize -2<cr>", { desc = "
 map({ "n", "i", "v" }, "<C-D-S-Right>", "<cmd>vertical resize +2<cr>", { desc = "Increase window width" })
 
 -- Move to window using the <ctrl> hjkl keys
-map({ "n", "i", "v" }, "<C-A-Left>", "<C-w>h", { desc = "Go to left window", remap = true })
-map({ "n", "i", "v" }, "<C-A-Down>", "<C-w>j", { desc = "Go to lower window", remap = true })
-map({ "n", "i", "v" }, "<C-A-Up>", "<C-w>k", { desc = "Go to upper window", remap = true })
-map({ "n", "i", "v" }, "<C-A-Right>", "<C-w>l", { desc = "Go to right window", remap = true })
+map({ "n", "i", "v" }, "<C-A-Left>", "<Esc><C-w>h", { desc = "Go to left window", remap = true })
+map({ "n", "i", "v" }, "<C-A-Down>", "<Esc><C-w>j", { desc = "Go to lower window", remap = true })
+map({ "n", "i", "v" }, "<C-A-Up>", "<Esc><C-w>k", { desc = "Go to upper window", remap = true })
+map({ "n", "i", "v" }, "<C-A-Right>", "<Esc><C-w>l", { desc = "Go to right window", remap = true })
 
-map({ "n", "i", "v" }, "<C-A-S-Left>", "<C-w>h", { desc = "Go to left window", remap = true })
-map({ "n", "i", "v" }, "<C-A-S-Down>", "<C-w>j", { desc = "Go to lower window", remap = true })
-map({ "n", "i", "v" }, "<C-A-S-Up>", "<C-w>k", { desc = "Go to upper window", remap = true })
-map({ "n", "i", "v" }, "<C-A-S-Right>", "<C-w>l", { desc = "Go to right window", remap = true })
+map({ "n", "i", "v" }, "<C-A-S-Left>", "<Esc><C-w>h", { desc = "Go to left window", remap = true })
+map({ "n", "i", "v" }, "<C-A-S-Down>", "<Esc><C-w>j", { desc = "Go to lower window", remap = true })
+map({ "n", "i", "v" }, "<C-A-S-Up>", "<Esc><C-w>k", { desc = "Go to upper window", remap = true })
+map({ "n", "i", "v" }, "<C-A-S-Right>", "<Esc><C-w>l", { desc = "Go to right window", remap = true })
 
 -- Save
 map({ "n", "i", "v" }, "<D-s>", "<cmd>w<cr>", { desc = "Save" })
@@ -39,12 +41,12 @@ map({ "i" }, "<D-d>", "<Esc>yypi", { desc = "Paste", noremap = true })
 map({ "n", "v" }, "<D-c>", '"+y', { desc = "Copy", noremap = true })
 map({ "n", "v" }, "<D-v>", '"+p', { desc = "Paste", noremap = true })
 map({ "n", "v" }, "<D-x>", '"+x', { desc = "Cut", noremap = true })
-map({ "i", "c" }, "<D-v>", "<C-r>+", { desc = "Paste", noremap = true })
+map({ "i", "c" }, "<D-v>", "<cmd>set paste<cr><C-r>+<cmd>set nopaste<cr>", { desc = "Paste", noremap = true })
 
 map({ "n", "v" }, "<D-S-c>", '"+y', { desc = "Copy", noremap = true })
 map({ "n", "v" }, "<D-S-v>", '"+p', { desc = "Paste", noremap = true })
 map({ "n", "v" }, "<D-S-x>", '"+x', { desc = "Cut", noremap = true })
-map({ "i", "c" }, "<D-S-v>", "<C-r>+", { desc = "Paste", noremap = true })
+map({ "i", "c" }, "<D-S-v>", "<cmd>set paste<cr><C-r>+<cmd>set nopaste<cr>", { desc = "Paste", noremap = true })
 
 -- Move to beginning/end of line
 map({ "n", "v" }, "<D-Left>", "^", { desc = "Beginning of line" })
