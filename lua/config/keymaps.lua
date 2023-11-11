@@ -3,6 +3,7 @@
 -- Add any additional keymaps here
 
 local map = vim.keymap.set
+local Util = require("lazyvim.util")
 
 -- n normal, i insert, v visual, s select, c command, t terminal, o operator pending
 
@@ -40,11 +41,13 @@ map({ "i" }, "<D-d>", "<Esc>yypi", { desc = "Paste", noremap = true })
 -- Copy, paste, cut
 map({ "n", "v" }, "<D-c>", '"+y', { desc = "Copy", noremap = true })
 map({ "n", "v" }, "<D-v>", '"+p', { desc = "Paste", noremap = true })
+map({ "t" }, "<D-v>", '<cmd>stopinsert<cr>"+pi', { desc = "Paste", noremap = true })
 map({ "n", "v" }, "<D-x>", '"+x', { desc = "Cut", noremap = true })
 map({ "i", "c" }, "<D-v>", "<cmd>set paste<cr><C-r>+<cmd>set nopaste<cr>", { desc = "Paste", noremap = true })
 
 map({ "n", "v" }, "<D-S-c>", '"+y', { desc = "Copy", noremap = true })
 map({ "n", "v" }, "<D-S-v>", '"+p', { desc = "Paste", noremap = true })
+map({ "t" }, "<D-S-v>", '<cmd>stopinsert<cr>"+pi', { desc = "Paste", noremap = true })
 map({ "n", "v" }, "<D-S-x>", '"+x', { desc = "Cut", noremap = true })
 map({ "i", "c" }, "<D-S-v>", "<cmd>set paste<cr><C-r>+<cmd>set nopaste<cr>", { desc = "Paste", noremap = true })
 
@@ -69,7 +72,11 @@ map({ "i", "n", "v" }, "<D-m>", function()
   require("telescope.builtin").lsp_document_symbols({ symbols = require("lazyvim.config").get_kind_filter() })
 end, { desc = "Document symbols" })
 
--- Increase, Decrease Font Size
+map("n", "<leader>fm", function()
+  Util.terminal({ "musicfox" }, { cwd = Util.root() })
+end, { desc = "Run Musicfox" })
+
+-- Increase, Decrease Font size
 map({ "i", "n", "v", "s", "t", "o" }, "<C-=>", function()
   vim.g.guifontsize = vim.g.guifontsize + 1
   vim.cmd("set guifont=" .. vim.g.guifont .. ":h" .. vim.g.guifontsize)
