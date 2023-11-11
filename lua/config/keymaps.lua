@@ -12,29 +12,29 @@ local lazygit =
 -- n normal, i insert, v visual, s select, c command, t terminal, o operator pending
 
 -- Resize window using <ctrl> arrow keys
-map({ "n", "i", "v" }, "<C-D-Up>", "<cmd>resize +2<cr>", { desc = "Increase window height" })
-map({ "n", "i", "v" }, "<C-D-Down>", "<cmd>resize -2<cr>", { desc = "Decrease window height" })
-map({ "n", "i", "v" }, "<C-D-Left>", "<cmd>vertical resize -2<cr>", { desc = "Decrease window width" })
-map({ "n", "i", "v" }, "<C-D-Right>", "<cmd>vertical resize +2<cr>", { desc = "Increase window width" })
+map({ "n", "i", "v", "t" }, "<C-D-Up>", "<cmd>resize +2<cr>", { desc = "Increase window height" })
+map({ "n", "i", "v", "t" }, "<C-D-Down>", "<cmd>resize -2<cr>", { desc = "Decrease window height" })
+map({ "n", "i", "v", "t" }, "<C-D-Left>", "<cmd>vertical resize -2<cr>", { desc = "Decrease window width" })
+map({ "n", "i", "v", "t" }, "<C-D-Right>", "<cmd>vertical resize +2<cr>", { desc = "Increase window width" })
 
-map({ "n", "i", "v" }, "<C-D-S-Up>", "<cmd>resize +2<cr>", { desc = "Increase window height" })
-map({ "n", "i", "v" }, "<C-D-S-Down>", "<cmd>resize -2<cr>", { desc = "Decrease window height" })
-map({ "n", "i", "v" }, "<C-D-S-Left>", "<cmd>vertical resize -2<cr>", { desc = "Decrease window width" })
-map({ "n", "i", "v" }, "<C-D-S-Right>", "<cmd>vertical resize +2<cr>", { desc = "Increase window width" })
+map({ "n", "i", "v", "t" }, "<C-D-S-Up>", "<cmd>resize +2<cr>", { desc = "Increase window height" })
+map({ "n", "i", "v", "t" }, "<C-D-S-Down>", "<cmd>resize -2<cr>", { desc = "Decrease window height" })
+map({ "n", "i", "v", "t" }, "<C-D-S-Left>", "<cmd>vertical resize -2<cr>", { desc = "Decrease window width" })
+map({ "n", "i", "v", "t" }, "<C-D-S-Right>", "<cmd>vertical resize +2<cr>", { desc = "Increase window width" })
 
 -- Move to window using the <ctrl> hjkl keys
-map({ "n", "i", "v" }, "<C-A-Left>", "<Esc><C-w>h", { desc = "Go to left window", remap = true })
-map({ "n", "i", "v" }, "<C-A-Down>", "<Esc><C-w>j", { desc = "Go to lower window", remap = true })
-map({ "n", "i", "v" }, "<C-A-Up>", "<Esc><C-w>k", { desc = "Go to upper window", remap = true })
-map({ "n", "i", "v" }, "<C-A-Right>", "<Esc><C-w>l", { desc = "Go to right window", remap = true })
+map({ "n", "i", "v", "t" }, "<C-A-Left>", "<Esc><Esc><C-w>h", { desc = "Go to left window", remap = true })
+map({ "n", "i", "v", "t" }, "<C-A-Down>", "<Esc><Esc><C-w>j", { desc = "Go to lower window", remap = true })
+map({ "n", "i", "v", "t" }, "<C-A-Up>", "<Esc><Esc><C-w>k", { desc = "Go to upper window", remap = true })
+map({ "n", "i", "v", "t" }, "<C-A-Right>", "<Esc><Esc><C-w>l", { desc = "Go to right window", remap = true })
 
-map({ "n", "i", "v" }, "<C-A-S-Left>", "<Esc><C-w>h", { desc = "Go to left window", remap = true })
-map({ "n", "i", "v" }, "<C-A-S-Down>", "<Esc><C-w>j", { desc = "Go to lower window", remap = true })
-map({ "n", "i", "v" }, "<C-A-S-Up>", "<Esc><C-w>k", { desc = "Go to upper window", remap = true })
-map({ "n", "i", "v" }, "<C-A-S-Right>", "<Esc><C-w>l", { desc = "Go to right window", remap = true })
+map({ "n", "i", "v", "t" }, "<C-A-S-Left>", "<Esc><C-w>h", { desc = "Go to left window", remap = true })
+map({ "n", "i", "v", "t" }, "<C-A-S-Down>", "<Esc><C-w>j", { desc = "Go to lower window", remap = true })
+map({ "n", "i", "v", "t" }, "<C-A-S-Up>", "<Esc><C-w>k", { desc = "Go to upper window", remap = true })
+map({ "n", "i", "v", "t" }, "<C-A-S-Right>", "<Esc><C-w>l", { desc = "Go to right window", remap = true })
 
 -- Save
-map({ "n", "i", "v" }, "<D-s>", "<cmd>w<cr>", { desc = "Save" })
+map({ "n", "i", "v" }, "<D-s>", "<cmd>w<cr><Esc>", { desc = "Save" })
 map({ "n", "i", "v", "s", "c" }, "<D-z>", "<cmd>undo<cr>", { desc = "Undo" })
 map({ "n", "i", "v", "s", "c" }, "<D-S-z>", "<cmd>redo<cr>", { desc = "Redo" })
 
@@ -77,11 +77,16 @@ map({ "i", "n", "v" }, "<D-m>", function()
 end, { desc = "Document symbols" })
 
 -- Terminal
-map({ "i", "n", "v", "s", "c", "t" }, "<D-`>", "<cmd>ToggleTerm<cr>", { desc = "Open terminal" })
+map({ "i", "n", "v", "t" }, "<D-`>", "<cmd>ToggleTerm size=40<cr>", { desc = "Open terminal" })
 
 -- musicfox
 map("n", "<leader>fm", function()
   musicfox:toggle()
+end, { desc = "Run musicfox" })
+map({ "i", "n", "v", "t" }, "<D-1>", function()
+  vim.cmd("stopinsert")
+  musicfox:toggle()
+  vim.cmd("startinsert")
 end, { desc = "Run musicfox" })
 
 -- lazygit
@@ -90,11 +95,14 @@ map("n", "<leader>gg", function()
 end, { desc = "Run lazygit" })
 
 -- Increase, Decrease Font size
-map({ "i", "n", "v", "s", "t", "o" }, "<C-=>", function()
-  vim.g.guifontsize = vim.g.guifontsize + 1
-  vim.cmd("set guifont=" .. vim.g.guifont .. ":h" .. vim.g.guifontsize)
-end, { desc = "Increase font size" })
-map({ "i", "n", "v", "s", "t", "o" }, "<C-->", function()
-  vim.g.guifontsize = vim.g.guifontsize - 1
-  vim.cmd("set guifont=" .. vim.g.guifont .. ":h" .. vim.g.guifontsize)
-end, { desc = "Increase font size" })
+local change_font_size = function(delta)
+  return function()
+    vim.g.guifontsize = vim.g.guifontsize + delta
+    vim.cmd("set guifont=" .. vim.g.guifont .. ":h" .. vim.g.guifontsize)
+  end
+end
+map({ "i", "n", "v", "s", "t", "o" }, "<C-=>", change_font_size(1), { desc = "Increase font size" })
+map({ "i", "n", "v", "s", "t", "o" }, "<C-->", change_font_size(-1), { desc = "Increase font size" })
+
+map({ "i", "n", "v", "s", "t", "o" }, "<D-=>", change_font_size(1), { desc = "Increase font size" })
+map({ "i", "n", "v", "s", "t", "o" }, "<D-->", change_font_size(-1), { desc = "Increase font size" })
