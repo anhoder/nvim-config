@@ -3,7 +3,11 @@
 -- Add any additional keymaps here
 
 local map = vim.keymap.set
-local Util = require("lazyvim.util")
+local Terminal = require("toggleterm.terminal").Terminal
+local musicfox =
+  Terminal:new({ cmd = "musicfox", hidden = true, direction = "float", float_opts = { border = "curved" } })
+local lazygit =
+  Terminal:new({ cmd = "lazygit", hidden = true, direction = "float", float_opts = { border = "curved" } })
 
 -- n normal, i insert, v visual, s select, c command, t terminal, o operator pending
 
@@ -72,9 +76,18 @@ map({ "i", "n", "v" }, "<D-m>", function()
   require("telescope.builtin").lsp_document_symbols({ symbols = require("lazyvim.config").get_kind_filter() })
 end, { desc = "Document symbols" })
 
+-- Terminal
+map({ "i", "n", "v", "s", "c", "t" }, "<D-`>", "<cmd>ToggleTerm<cr>", { desc = "Open terminal" })
+
+-- musicfox
 map("n", "<leader>fm", function()
-  Util.terminal({ "musicfox" }, { cwd = Util.root() })
-end, { desc = "Run Musicfox" })
+  musicfox:toggle()
+end, { desc = "Run musicfox" })
+
+-- lazygit
+map("n", "<leader>gg", function()
+  lazygit:toggle()
+end, { desc = "Run lazygit" })
 
 -- Increase, Decrease Font size
 map({ "i", "n", "v", "s", "t", "o" }, "<C-=>", function()
