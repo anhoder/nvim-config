@@ -1,17 +1,28 @@
+local home = vim.fn.expand("$HOME")
+
 return {
   {
     "neovim/nvim-lspconfig",
     opts = {
       servers = {
-        intelephense = {},
-        -- phpactor = {
-        -- filetypes = { "php" },
-        -- init_options = {
-        -- ["language_server.diagnostics_on_open"] = false,
-        -- ["language_server.diagnostics_on_save"] = false,
-        -- ["language_server.diagnostics_on_update"] = false,
-        -- },
-        -- },
+        intelephense = {
+          settings = {
+            intelephense = {
+              environment = {
+                includePaths = { home .. "/Desktop/www/yii/" },
+              },
+            },
+          },
+        },
+        phpactor = {
+          filetypes = { "php" },
+          init_options = {
+            ["language_server.diagnostics_on_open"] = false,
+            ["language_server.diagnostics_on_save"] = false,
+            ["language_server.diagnostics_on_update"] = false,
+          },
+          autostart = false,
+        },
       },
     },
   },

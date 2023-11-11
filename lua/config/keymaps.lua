@@ -4,10 +4,23 @@
 
 local map = vim.keymap.set
 local Terminal = require("toggleterm.terminal").Terminal
-local musicfox =
-  Terminal:new({ cmd = "musicfox", hidden = true, direction = "float", float_opts = { border = "curved" } })
-local lazygit =
-  Terminal:new({ cmd = "lazygit", hidden = true, direction = "float", float_opts = { border = "curved" } })
+local term1 = Terminal:new({ display_name = "term1", direction = "float", float_opts = { border = "curved" } })
+local term2 = Terminal:new({ display_name = "term2", direction = "float", float_opts = { border = "curved" } })
+local term3 = Terminal:new({ display_name = "term3", direction = "float", float_opts = { border = "curved" } })
+local musicfox = Terminal:new({
+  cmd = "musicfox",
+  display_name = "musicfox",
+  hidden = true,
+  direction = "float",
+  float_opts = { border = "curved" },
+})
+local lazygit = Terminal:new({
+  cmd = "lazygit",
+  display_name = "lazygit",
+  hidden = true,
+  direction = "float",
+  float_opts = { border = "curved" },
+})
 
 -- n normal, i insert, v visual, s select, c command, t terminal, o operator pending
 
@@ -77,13 +90,30 @@ map({ "i", "n", "v" }, "<D-m>", function()
 end, { desc = "Document symbols" })
 
 -- Terminal
-map({ "i", "n", "v", "t" }, "<D-`>", "<cmd>ToggleTerm size=40<cr>", { desc = "Open terminal" })
+map({ "i", "n", "v", "t" }, "<D-`>", "<Esc><cmd>ToggleTerm size=30<cr>", { desc = "Open terminal" })
+map({ "i", "n", "v", "t" }, "<D-1>", function()
+  vim.cmd("stopinsert")
+  term1:toggle()
+  vim.cmd("startinsert")
+end, { desc = "Open terminal 1" })
+map({ "i", "n", "v", "t" }, "<D-2>", function()
+  vim.cmd("stopinsert")
+  term2:toggle()
+  vim.cmd("startinsert")
+end, { desc = "Open terminal 2" })
+map({ "i", "n", "v", "t" }, "<D-3>", function()
+  vim.cmd("stopinsert")
+  term3:toggle()
+  vim.cmd("startinsert")
+end, { desc = "Open terminal 3" })
 
 -- musicfox
-map("n", "<leader>fm", function()
+map("n", "<leader>mf", function()
   musicfox:toggle()
+  vim.cmd("startinsert")
 end, { desc = "Run musicfox" })
-map({ "i", "n", "v", "t" }, "<D-1>", function()
+
+map({ "i", "n", "v", "t" }, "<D-Esc>", function()
   vim.cmd("stopinsert")
   musicfox:toggle()
   vim.cmd("startinsert")
@@ -92,6 +122,7 @@ end, { desc = "Run musicfox" })
 -- lazygit
 map("n", "<leader>gg", function()
   lazygit:toggle()
+  vim.cmd("startinsert")
 end, { desc = "Run lazygit" })
 
 -- Increase, Decrease Font size
