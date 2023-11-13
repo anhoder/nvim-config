@@ -3,7 +3,9 @@
 -- Add any additional keymaps here
 
 local map = vim.keymap.set
-local Terminal = require("toggleterm.terminal").Terminal
+local toggleterm = require("toggleterm.terminal")
+local Terminal = toggleterm.Terminal
+local term0 = Terminal:new({ display_name = "term0" })
 local term1 = Terminal:new({ display_name = "term1", direction = "float", float_opts = { border = "curved" } })
 local term2 = Terminal:new({ display_name = "term2", direction = "float", float_opts = { border = "curved" } })
 local term3 = Terminal:new({ display_name = "term3", direction = "float", float_opts = { border = "curved" } })
@@ -46,12 +48,29 @@ map({ "n", "i", "v", "t" }, "<C-A-S-Down>", "<Esc><C-w>j", { desc = "Go to lower
 map({ "n", "i", "v", "t" }, "<C-A-S-Up>", "<Esc><C-w>k", { desc = "Go to upper window", remap = true })
 map({ "n", "i", "v", "t" }, "<C-A-S-Right>", "<Esc><C-w>l", { desc = "Go to right window", remap = true })
 
+-- Close window
+map({ "n", "i", "v", "t" }, "<D-w>", function()
+  local bd = require("mini.bufremove").delete
+  if vim.bo.modified then
+    local choice = vim.fn.confirm(("Save changes to %q?"):format(vim.fn.bufname()), "&Yes\n&No\n&Cancel")
+    if choice == 1 then -- Yes
+      vim.cmd.write()
+      bd(0)
+    elseif choice == 2 then -- No
+      bd(0, true)
+    end
+  else
+    bd(0)
+  end
+end, { desc = "Close buffer" })
+
 -- Save
 map({ "n", "i", "v" }, "<D-s>", "<cmd>w<cr><Esc>", { desc = "Save" })
 map({ "n", "i", "v", "s", "c" }, "<D-z>", "<cmd>undo<cr>", { desc = "Undo" })
 map({ "n", "i", "v", "s", "c" }, "<D-S-z>", "<cmd>redo<cr>", { desc = "Redo" })
 
 -- Dup one line
+--
 map({ "n", "v" }, "<D-d>", "<Esc>yyp", { desc = "Paste", noremap = true })
 map({ "i" }, "<D-d>", "<Esc>yypi", { desc = "Paste", noremap = true })
 
@@ -90,39 +109,57 @@ map({ "i", "n", "v" }, "<D-m>", function()
 end, { desc = "Document symbols" })
 
 -- Terminal
-map({ "i", "n", "v", "t" }, "<D-`>", "<Esc><cmd>ToggleTerm size=30<cr>", { desc = "Open terminal" })
+map({ "i", "n", "v", "t" }, "<D-`>", function()
+  vim.cmd("stopinsert")
+  term0:toggle()
+  if term0:is_open() then
+    term0:set_mode(toggleterm.mode.INSERT)
+  end
+end, { desc = "Open terminal" })
 map({ "i", "n", "v", "t" }, "<D-1>", function()
   vim.cmd("stopinsert")
   term1:toggle()
-  vim.cmd("startinsert")
+  if term1:is_open() then
+    term1:set_mode(toggleterm.mode.INSERT)
+  end
 end, { desc = "Open terminal 1" })
 map({ "i", "n", "v", "t" }, "<D-2>", function()
   vim.cmd("stopinsert")
   term2:toggle()
-  vim.cmd("startinsert")
+  if term2:is_open() then
+    term2:set_mode(toggleterm.mode.INSERT)
+  end
 end, { desc = "Open terminal 2" })
 map({ "i", "n", "v", "t" }, "<D-3>", function()
   vim.cmd("stopinsert")
   term3:toggle()
-  vim.cmd("startinsert")
+  if term3:is_open() then
+    term3:set_mode(toggleterm.mode.INSERT)
+  end
 end, { desc = "Open terminal 3" })
 
 -- musicfox
 map("n", "<leader>mf", function()
   musicfox:toggle()
-  vim.cmd("startinsert")
+  if musicfox:is_open() then
+    musicfox:set_mode(toggleterm.mode.INSERT)
+  end
 end, { desc = "Run musicfox" })
 
 map({ "i", "n", "v", "t" }, "<D-Esc>", function()
-  vim.cmd("stopinsert")
+  -- vim.cmd("stopinsert")
   musicfox:toggle()
-  vim.cmd("startinsert")
+  if musicfox:is_open() then
+    musicfox:set_mode(toggleterm.mode.INSERT)
+  end
 end, { desc = "Run musicfox" })
 
 -- lazygit
 map("n", "<leader>gg", function()
   lazygit:toggle()
-  vim.cmd("startinsert")
+  if lazygit:is_open() then
+    lazygit:set_mode(toggleterm.mode.INSERT)
+  end
 end, { desc = "Run lazygit" })
 
 -- Increase, Decrease Font size
@@ -132,8 +169,25 @@ local change_font_size = function(delta)
     vim.cmd("set guifont=" .. vim.g.guifont .. ":h" .. vim.g.guifontsize)
   end
 end
-map({ "i", "n", "v", "s", "t", "o" }, "<C-=>", change_font_size(1), { desc = "Increase font size" })
-map({ "i", "n", "v", "s", "t", "o" }, "<C-->", change_font_size(-1), { desc = "Increase font size" })
-
 map({ "i", "n", "v", "s", "t", "o" }, "<D-=>", change_font_size(1), { desc = "Increase font size" })
-map({ "i", "n", "v", "s", "t", "o" }, "<D-->", change_font_size(-1), { desc = "Increase font size" })
+map({ "i", "n", "v", "s", "t", "o" }, "<D-->", change_font_size(-1), { desc = "Decrease font size" })
+map({ "i", "n", "v", "s", "t", "o" }, "<D-0>", function()
+  vim.cmd("set guifont=" .. vim.g.guifont .. ":h" .. 15)
+end, { desc = "Decrease font size" })
+
+-- Scale
+local change_scale_factor = function(delta)
+  return function()
+    vim.g.neovide_scale_factor = vim.g.neovide_scale_factor + delta
+  end
+end
+map({ "i", "n", "v", "s", "t", "o" }, "<C-=>", change_scale_factor(0.1), { desc = "Increase scale" })
+map({ "i", "n", "v", "s", "t", "o" }, "<C-->", change_scale_factor(-0.1), { desc = "Decrease scale" })
+map({ "i", "n", "v", "s", "t", "o" }, "<C-0>", function()
+  vim.g.neovide_scale_factor = 1.0
+end, { desc = "Reset scale" })
+
+-- GenComment
+map({ "n", "v" }, "<leader>cc", function()
+  require("neogen").generate({})
+end, { desc = "Gen Comment" })
