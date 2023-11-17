@@ -4,6 +4,7 @@
 
 local map = vim.keymap.set
 local toggleterm = require("toggleterm.terminal")
+local telescope_builtin = require("telescope.builtin")
 local Terminal = toggleterm.Terminal
 local term0 = Terminal:new({ display_name = "term0" })
 local term1 = Terminal:new({ display_name = "term1", direction = "float", float_opts = { border = "curved" } })
@@ -137,6 +138,27 @@ map({ "i", "n", "v", "t" }, "<D-3>", function()
     term3:set_mode(toggleterm.mode.INSERT)
   end
 end, { desc = "Open terminal 3" })
+map({ "i", "n", "v", "t" }, "<D-S-1>", function()
+  vim.cmd("stopinsert")
+  term1:toggle()
+  if term1:is_open() then
+    term1:set_mode(toggleterm.mode.INSERT)
+  end
+end, { desc = "Open terminal 1" })
+map({ "i", "n", "v", "t" }, "<D-S-2>", function()
+  vim.cmd("stopinsert")
+  term2:toggle()
+  if term2:is_open() then
+    term2:set_mode(toggleterm.mode.INSERT)
+  end
+end, { desc = "Open terminal 2" })
+map({ "i", "n", "v", "t" }, "<D-S-3>", function()
+  vim.cmd("stopinsert")
+  term3:toggle()
+  if term3:is_open() then
+    term3:set_mode(toggleterm.mode.INSERT)
+  end
+end, { desc = "Open terminal 3" })
 
 -- musicfox
 map("n", "<leader>mf", function()
@@ -191,3 +213,17 @@ end, { desc = "Reset scale" })
 map({ "n", "v" }, "<leader>cc", function()
   require("neogen").generate({})
 end, { desc = "Gen Comment" })
+
+-- telescope bufffers
+map({ "n", "v" }, "<leader>bt", "<cmd>Telescope buffers<cr>", { desc = "Telescope buffers" })
+map({ "n", "v" }, "<leader>sg", function()
+  telescope_builtin.live_grep({
+    glob_pattern = {
+      "!vendor/",
+      "!node_modules/",
+    },
+  })
+end, { desc = "Telescope Live Grep(ignore vendor/node_modules...)" })
+map({ "n", "v" }, "<leader>sG", function()
+  telescope_builtin.live_grep()
+end, { desc = "Telescope Live Grep(All)" })
