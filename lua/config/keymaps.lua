@@ -5,6 +5,7 @@
 local map = vim.keymap.set
 local toggleterm = require("toggleterm.terminal")
 local telescope_builtin = require("telescope.builtin")
+local Util = require("lazyvim.util")
 local Terminal = toggleterm.Terminal
 local term0 = Terminal:new({ display_name = "term0" })
 local term1 = Terminal:new({ display_name = "term1", direction = "float", float_opts = { border = "curved" } })
@@ -68,7 +69,7 @@ end, { desc = "Close buffer" })
 -- Save
 map({ "n", "i", "v" }, "<D-s>", "<cmd>w<cr><Esc>", { desc = "Save" })
 map({ "n", "i", "v", "s", "c" }, "<D-z>", "<cmd>undo<cr>", { desc = "Undo" })
-map({ "n", "i", "v", "s", "c" }, "<D-S-z>", "<cmd>redo<cr>", { desc = "Redo" })
+map({ "n", "i", "v", "s", "c" }, "<D-y>", "<cmd>redo<cr>", { desc = "Redo" })
 
 -- Dup one line
 --
@@ -184,6 +185,11 @@ map("n", "<leader>gg", function()
   end
 end, { desc = "Run lazygit" })
 
+-- fork
+map("n", "<leader>gf", function()
+  Util.terminal({ "fork" }, { cwd = Util.root(), esc_esc = false, ctrl_hjkl = false })
+end, { desc = "Open fork" })
+
 -- Increase, Decrease Font size
 local change_font_size = function(delta)
   return function()
@@ -226,4 +232,9 @@ map({ "n", "v" }, "<leader>sg", function()
 end, { desc = "Telescope Live Grep(ignore vendor/node_modules...)" })
 map({ "n", "v" }, "<leader>sG", function()
   telescope_builtin.live_grep()
+end, { desc = "Telescope Live Grep(All)" })
+
+-- upload to remote
+map({ "n", "v", "i" }, "<D-u>", function()
+  vim.cmd("ARsyncUp")
 end, { desc = "Telescope Live Grep(All)" })
