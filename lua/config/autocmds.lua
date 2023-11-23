@@ -29,9 +29,13 @@ vim.api.nvim_create_autocmd("FileType", {
   callback = function(_)
     if vim.tbl_contains(ignore_filetypes, vim.bo.filetype) then
       vim.b.focus_disable = true
-    else
-      vim.b.focus_disable = false
+      return
     end
+    if string.sub(vim.bo.filetype, 1, 3) == "dap" then
+      vim.b.focus_disable = true
+      return
+    end
+    vim.b.focus_disable = false
   end,
   desc = "Disable focus autoresize for FileType",
 })
