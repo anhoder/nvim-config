@@ -22,10 +22,10 @@ return {
             request = "launch",
             name = "Listen for Xdebug",
             port = 9003,
-            pathMappings = {
-              ["/var/www/html"] = "${workspaceFolder}",
-              ["${workspaceFolder}"] = "${workspaceFolder}",
-            },
+            -- pathMappings = {
+            --   ["/var/www/html"] = "${workspaceFolder}",
+            --   ["${workspaceFolder}"] = "${workspaceFolder}",
+            -- },
           },
         }
         require("mason-nvim-dap").default_setup(config) -- don't forget this!
