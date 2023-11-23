@@ -235,6 +235,9 @@ map({ "n", "v" }, "<leader>sG", function()
 end, { desc = "Telescope Live Grep(All)" })
 
 -- upload to remote
-map({ "n", "v", "i" }, "<D-u>", function()
+map({ "n", "v", "i" }, "<C-D-u>", function()
   vim.cmd("ARsyncUp")
-end, { desc = "Telescope Live Grep(All)" })
+end, { desc = "Sync up to remote" })
+map({ "n", "v", "i" }, "<C-D-d>", function()
+  vim.cmd("ARsyncDown")
+end, { desc = "Sync down from remote" })
