@@ -95,6 +95,9 @@ map({ "n", "v" }, "<D-Right>", "$", { desc = "End of line" })
 map({ "i" }, "<D-Left>", "<Esc>^i", { desc = "Beginning of line" })
 map({ "i" }, "<D-Right>", "<Esc>$a", { desc = "End of line" })
 
+map({ "n", "v", "i" }, "<A-Left>", "<Esc>zH", { desc = "Scroll to left" })
+map({ "n", "v", "i" }, "<A-Right>", "<Esc>zL", { desc = "Scroll to right" })
+
 -- Select
 map({ "n", "i", "v" }, "<D-S-Left>", "<Esc>v^", { desc = "Select to beginning of line" })
 map({ "n", "i", "v" }, "<D-S-Right>", "<Esc>v$", { desc = "Select to end of line" })
@@ -170,7 +173,7 @@ map("n", "<leader>mf", function()
 end, { desc = "Run musicfox" })
 
 map({ "i", "n", "v", "t" }, "<D-Esc>", function()
-  -- vim.cmd("stopinsert")
+  vim.cmd("stopinsert")
   musicfox:toggle()
   if musicfox:is_open() then
     musicfox:set_mode(toggleterm.mode.INSERT)
