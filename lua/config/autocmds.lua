@@ -48,3 +48,13 @@ vim.api.nvim_create_autocmd("VimEnter", {
     vim.api.nvim_set_current_dir(vim.fn.expand("%:p:h"))
   end,
 })
+
+local autopin_group = vim.api.nvim_create_augroup("autopin", {})
+vim.api.nvim_create_autocmd({ "User" }, {
+  pattern = "PersistedLoadPost",
+  group = autopin_group,
+  callback = function()
+    local actions = require("hbac.command.actions")
+    actions.pin_all()
+  end,
+})
