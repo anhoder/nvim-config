@@ -1,5 +1,6 @@
 return {
   "nvim-neo-tree/neo-tree.nvim",
+  dependencies = { "3rd/image.nvim" },
   opts = {
     filesystem = {
       filtered_items = {
@@ -15,6 +16,11 @@ return {
           ".DS_Store",
         },
         never_show = {},
+      },
+    },
+    window = {
+      mappings = {
+        ["P"] = { "toggle_preview", config = { use_float = true, use_image_nvim = true } },
       },
     },
   },
