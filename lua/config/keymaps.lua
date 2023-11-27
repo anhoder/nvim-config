@@ -6,6 +6,8 @@ local map = vim.keymap.set
 local toggleterm = require("toggleterm.terminal")
 local telescope_builtin = require("telescope.builtin")
 local Util = require("lazyvim.util")
+local neotree_manager = require("neo-tree.sources.manager")
+local neotree_render = require("neo-tree.ui.renderer")
 local Terminal = toggleterm.Terminal
 local term0 = Terminal:new({ display_name = "term0" })
 local term1 = Terminal:new({ display_name = "term1", direction = "float", float_opts = { border = "curved" } })
@@ -25,6 +27,18 @@ local lazygit = Terminal:new({
   direction = "float",
   float_opts = { border = "curved" },
 })
+local function get_folder_node(tree, node)
+  if not tree then
+    return nil
+  end
+  if not node then
+    node = tree:get_node()
+  end
+  if node.type == "directory" then
+    return node
+  end
+  return get_folder_node(tree, tree:get_node(node:get_parent_id()))
+end
 
 -- n normal, i insert, v visual, s select, c command, t terminal, o operator pending
 
@@ -219,8 +233,9 @@ map({ "i", "n", "v", "s", "t", "o" }, "<C-0>", function()
 end, { desc = "Reset scale" })
 
 -- GenComment
+local neogen = require("neogen")
 map({ "n", "v" }, "<leader>cc", function()
-  require("neogen").generate({})
+  neogen.generate({})
 end, { desc = "Gen Comment" })
 
 -- telescope bufffers
@@ -234,8 +249,18 @@ map({ "n", "v" }, "<leader>sg", function()
   })
 end, { desc = "Telescope Live Grep(ignore vendor/node_modules...)" })
 map({ "n", "v" }, "<leader>sG", function()
+  local state = neotree_manager.get_state("filesystem")
+  if neotree_render.tree_is_visible(state) then
+    local dir = get_folder_node(state.tree)
+    if dir then
+      vim.notify("search in " .. dir.path)
+      telescope_builtin.live_grep({ cwd = dir.path })
+      return
+    end
+  end
+  vim.notify("search in " .. vim.fn.getcwd())
   telescope_builtin.live_grep()
-end, { desc = "Telescope Live Grep(All)" })
+end, { desc = "Telescope Live Grep(selected or root dir)" })
 
 -- upload to remote
 map({ "n", "v", "i" }, "<C-D-u>", function()
