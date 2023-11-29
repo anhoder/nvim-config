@@ -103,6 +103,11 @@ map({ "t" }, "<D-S-v>", '<cmd>stopinsert<cr>"+pi', { desc = "Paste", noremap = t
 map({ "n", "v" }, "<D-S-x>", '"+x', { desc = "Cut", noremap = true })
 map({ "i", "c" }, "<D-S-v>", "<cmd>set paste<cr><C-r>+<cmd>set nopaste<cr>", { desc = "Paste", noremap = true })
 
+-- Delete a word
+map({ "i" }, "<D-BS>", "<C-w>", { desc = "Delete word", noremap = true })
+map({ "n" }, "<D-BS>", "cb", { desc = "Delete word", noremap = true })
+map({ "i", "n" }, "<D-S-BS>", "<Esc>ciw", { desc = "Delete a whole word", noremap = true })
+
 -- Move to beginning/end of line
 map({ "n", "v" }, "<D-Left>", "^", { desc = "Beginning of line" })
 map({ "n", "v" }, "<D-Right>", "$", { desc = "End of line" })

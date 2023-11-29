@@ -40,18 +40,16 @@ vim.api.nvim_create_autocmd("FileType", {
   desc = "Disable focus autoresize for FileType",
 })
 
-local vim_enter = vim.api.nvim_create_augroup("VimEnter", { clear = true })
+local startup = vim.api.nvim_create_augroup("startup", { clear = true })
 vim.api.nvim_create_autocmd("VimEnter", {
-  group = vim_enter,
+  group = startup,
   pattern = "*",
   callback = function()
     vim.api.nvim_set_current_dir(vim.fn.expand("%:p:h"))
   end,
 })
-
-local buffer_enter = vim.api.nvim_create_augroup("BufEnter", { clear = true })
 vim.api.nvim_create_autocmd("BufEnter", {
-  group = buffer_enter,
+  group = startup,
   pattern = "*",
   callback = function()
     vim.opt.formatoptions = vim.opt.formatoptions - { "c", "r", "o" }

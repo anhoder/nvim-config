@@ -13,6 +13,7 @@ return {
               },
             },
           },
+          autostart = true,
         },
         phpactor = {
           filetypes = { "php" },
