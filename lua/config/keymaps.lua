@@ -8,6 +8,7 @@ local telescope_builtin = require("telescope.builtin")
 local Util = require("lazyvim.util")
 local neotree_manager = require("neo-tree.sources.manager")
 local neotree_render = require("neo-tree.ui.renderer")
+local state = require("hbac.state")
 local Terminal = toggleterm.Terminal
 local term0 = Terminal:new({ display_name = "term0" })
 local term1 = Terminal:new({ display_name = "term1", direction = "float", float_opts = { border = "curved" } })
@@ -105,12 +106,13 @@ map({ "i", "c" }, "<D-S-v>", "<cmd>set paste<cr><C-r>+<cmd>set nopaste<cr>", { d
 
 -- Delete a word
 map({ "i" }, "<D-BS>", "<C-w>", { desc = "Delete word", noremap = true })
-map({ "n" }, "<D-BS>", "cb", { desc = "Delete word", noremap = true })
-map({ "i", "n" }, "<D-S-BS>", "<Esc>ciw", { desc = "Delete a whole word", noremap = true })
+map({ "n" }, "<D-BS>", '"_cb', { desc = "Delete word", noremap = false })
+map({ "i", "n" }, "<D-S-BS>", '<Esc>"_ciw', { desc = "Delete a whole word", noremap = false })
 
 -- Move to beginning/end of line
 map({ "n", "v" }, "<D-Left>", "^", { desc = "Beginning of line" })
-map({ "n", "v" }, "<D-Right>", "$", { desc = "End of line" })
+map({ "n" }, "<D-Right>", "$", { desc = "End of line" })
+map({ "v" }, "<D-Right>", "$h", { desc = "End of line" })
 map({ "i" }, "<D-Left>", "<Esc>^i", { desc = "Beginning of line" })
 map({ "i" }, "<D-Right>", "<Esc>$a", { desc = "End of line" })
 
@@ -119,7 +121,7 @@ map({ "n", "v", "i" }, "<A-Right>", "<Esc>zL", { desc = "Scroll to right" })
 
 -- Select
 map({ "n", "i", "v" }, "<D-S-Left>", "<Esc>v^", { desc = "Select to beginning of line" })
-map({ "n", "i", "v" }, "<D-S-Right>", "<Esc>v$", { desc = "Select to end of line" })
+map({ "n", "i", "v" }, "<D-S-Right>", "<Esc>v$h", { desc = "Select to end of line" })
 
 -- Comment
 map({ "i", "n" }, "<D-/>", function()
@@ -209,14 +211,15 @@ end, { desc = "Run lazygit" })
 
 -- fork
 map("n", "<leader>gf", function()
-  Util.terminal({ "fork" }, { cwd = Util.root(), esc_esc = false, ctrl_hjkl = false })
+  os.execute("fork " .. Util.root())
 end, { desc = "Open fork" })
 
 -- Increase, Decrease Font size
 local change_font_size = function(delta)
   return function()
     vim.g.guifontsize = vim.g.guifontsize + delta
-    vim.cmd("set guifont=" .. vim.g.guifont .. ":h" .. vim.g.guifontsize)
+    local font = string.gsub(vim.g.guifont, " ", "\\ ")
+    vim.cmd("set guifont=" .. font .. ":h" .. vim.g.guifontsize)
   end
 end
 map({ "i", "n", "v", "s", "t", "o" }, "<D-=>", change_font_size(1), { desc = "Increase font size" })
@@ -274,3 +277,24 @@ end, { desc = "Sync up to remote" })
 map({ "n", "v", "i" }, "<C-D-d>", function()
   vim.cmd("ARsyncDown")
 end, { desc = "Sync down from remote" })
+
+-- open file in finder
+map({ "n", "v" }, "<leader>p", function()
+  local state = neotree_manager.get_state("filesystem")
+  local path = vim.fn.expand("%:p:h")
+  if neotree_render.tree_is_visible(state) then
+    local node = state.tree:get_node()
+    path = node.path
+  end
+
+  os.execute("open " .. path)
+end, { desc = "Open file in Finder" })
+
+-- pin buffer
+map({ "n", "v", "i" }, "<C-p>", function()
+  local bufnr = vim.api.nvim_get_current_buf()
+  if state.is_pinned(bufnr) then
+    return
+  end
+  state.toggle_pin(bufnr)
+end, { desc = "Pin cur buffer" })
