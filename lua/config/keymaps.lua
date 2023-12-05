@@ -93,13 +93,13 @@ map({ "i" }, "<D-d>", "<Esc>yypi", { desc = "Paste", noremap = true })
 
 -- Copy, paste, cut
 map({ "n", "v" }, "<D-c>", '"+y', { desc = "Copy", noremap = true })
-map({ "n", "v" }, "<D-v>", '"+p', { desc = "Paste", noremap = true })
+map({ "n", "v" }, "<D-v>", '"+pgvy', { desc = "Paste", noremap = true })
 map({ "t" }, "<D-v>", '<cmd>stopinsert<cr>"+pi', { desc = "Paste", noremap = true })
 map({ "n", "v" }, "<D-x>", '"+x', { desc = "Cut", noremap = true })
 map({ "i", "c" }, "<D-v>", "<cmd>set paste<cr><C-r>+<cmd>set nopaste<cr>", { desc = "Paste", noremap = true })
 
 map({ "n", "v" }, "<D-S-c>", '"+y', { desc = "Copy", noremap = true })
-map({ "n", "v" }, "<D-S-v>", '"+p', { desc = "Paste", noremap = true })
+map({ "n", "v" }, "<D-S-v>", '"+pgvy', { desc = "Paste", noremap = true })
 map({ "t" }, "<D-S-v>", '<cmd>stopinsert<cr>"+pi', { desc = "Paste", noremap = true })
 map({ "n", "v" }, "<D-S-x>", '"+x', { desc = "Cut", noremap = true })
 map({ "i", "c" }, "<D-S-v>", "<cmd>set paste<cr><C-r>+<cmd>set nopaste<cr>", { desc = "Paste", noremap = true })
@@ -116,8 +116,9 @@ map({ "v" }, "<D-Right>", "$h", { desc = "End of line" })
 map({ "i" }, "<D-Left>", "<Esc>^i", { desc = "Beginning of line" })
 map({ "i" }, "<D-Right>", "<Esc>$a", { desc = "End of line" })
 
-map({ "n", "v", "i" }, "<A-Left>", "<Esc>zH", { desc = "Scroll to left" })
-map({ "n", "v", "i" }, "<A-Right>", "<Esc>zL", { desc = "Scroll to right" })
+-- move to left/right
+map({ "n", "v", "i" }, "<A-Left>", "<ScrollWheelLeft>", { desc = "Scroll to left", noremap = true })
+map({ "n", "v", "i" }, "<A-Right>", "<ScrollWheelRight>", { desc = "Scroll to right", noremap = true })
 
 -- Select
 map({ "n", "i", "v" }, "<D-S-Left>", "<Esc>v^", { desc = "Select to beginning of line" })
@@ -257,9 +258,9 @@ map({ "n", "v" }, "<leader>sg", function()
   })
 end, { desc = "Telescope Live Grep(ignore vendor/node_modules...)" })
 map({ "n", "v" }, "<leader>sG", function()
-  local state = neotree_manager.get_state("filesystem")
-  if neotree_render.tree_is_visible(state) then
-    local dir = get_folder_node(state.tree)
+  local fs_state = neotree_manager.get_state("filesystem")
+  if neotree_render.tree_is_visible(fs_state) then
+    local dir = get_folder_node(fs_state.tree)
     if dir then
       vim.notify("search in " .. dir.path)
       telescope_builtin.live_grep({ cwd = dir.path })
@@ -280,21 +281,49 @@ end, { desc = "Sync down from remote" })
 
 -- open file in finder
 map({ "n", "v" }, "<leader>p", function()
-  local state = neotree_manager.get_state("filesystem")
+  local fs_state = neotree_manager.get_state("filesystem")
   local path = vim.fn.expand("%:p:h")
-  if neotree_render.tree_is_visible(state) then
-    local node = state.tree:get_node()
+  if neotree_render.tree_is_visible(fs_state) then
+    local node = fs_state.tree:get_node()
     path = node.path
   end
-
   os.execute("open " .. path)
 end, { desc = "Open file in Finder" })
 
+-- open file in vscode
+map({ "n", "v" }, "<leader>P", function()
+  local fs_state = neotree_manager.get_state("filesystem")
+  local path = vim.fn.expand("%")
+  if neotree_render.tree_is_visible(fs_state) then
+    local node = fs_state.tree:get_node()
+    path = node.path
+  end
+  local _, _, code = os.execute("code " .. path)
+  if code == 0 then
+    return
+  end
+  os.execute("code-insiders " .. path)
+end, { desc = "Open file in code" })
+
+-- locate cur file in neo-tree
+map({ "n", "v", "i", "o", "s" }, "<C-D-/>", "<cmd>Neotree reveal<cr>", { desc = "Locate cur file in neo-tree" })
+
 -- pin buffer
-map({ "n", "v", "i" }, "<C-p>", function()
+map({ "n", "v", "i" }, "<D-p>", function()
   local bufnr = vim.api.nvim_get_current_buf()
   if state.is_pinned(bufnr) then
     return
   end
   state.toggle_pin(bufnr)
 end, { desc = "Pin cur buffer" })
+
+-- disable ScrollWheelLeft, ScrollWheelRight
+map({ "n", "v", "i", "s", "c", "o" }, "<ScrollWheelLeft>", "<Nop>", { desc = "Disabled", noremap = true })
+map({ "n", "v", "i", "s", "c", "o" }, "<ScrollWheelRight>", "<Nop>", { desc = "Disabled", noremap = true })
+map({ "n", "v", "i", "s", "c", "o" }, "<S-ScrollWheelLeft>", "<ScrollWheelLeft>", { desc = "Disabled", noremap = true })
+map(
+  { "n", "v", "i", "s", "c", "o" },
+  "<S-ScrollWheelRight>",
+  "<ScrollWheelRight>",
+  { desc = "Disabled", noremap = true }
+)

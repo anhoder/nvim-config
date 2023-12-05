@@ -2,6 +2,7 @@ return {
   "nvim-neo-tree/neo-tree.nvim",
   dependencies = { "3rd/image.nvim" },
   opts = {
+    enable_normal_mode_for_inputs = true,
     filesystem = {
       filtered_items = {
         -- visible = true,
@@ -16,6 +17,11 @@ return {
           ".DS_Store",
         },
         never_show = {},
+      },
+      follow_current_file = {
+        enabled = false,
+        leave_dirs_open = false,
+        group_empty_dirs = true,
       },
     },
     window = {
