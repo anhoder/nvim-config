@@ -9,8 +9,9 @@ local Util = require("lazyvim.util")
 local neotree_manager = require("neo-tree.sources.manager")
 local neotree_render = require("neo-tree.ui.renderer")
 local state = require("hbac.state")
+local telescope_pickers = require("config.telescope_pickers")
 local Terminal = toggleterm.Terminal
-local term0 = Terminal:new({ display_name = "term0" })
+local term0 = Terminal:new({ display_name = "term0", direction = "horizontal" })
 local term1 = Terminal:new({ display_name = "term1", direction = "float", float_opts = { border = "curved" } })
 local term2 = Terminal:new({ display_name = "term2", direction = "float", float_opts = { border = "curved" } })
 local term3 = Terminal:new({ display_name = "term3", direction = "float", float_opts = { border = "curved" } })
@@ -130,18 +131,21 @@ map({ "i", "n" }, "<D-/>", function()
 end, { expr = true, desc = "Comment" })
 map("v", "<D-/>", [[:<c-u>lua MiniComment.operator('visual')<cr>]], { desc = "Comment selection" })
 
--- Document symbols
-map({ "i", "n", "v" }, "<D-m>", function()
-  require("telescope.builtin").lsp_document_symbols({ symbols = require("lazyvim.config").get_kind_filter() })
-end, { desc = "Document symbols" })
-
 -- Terminal
+local hide_all = function()
+  for _, value in ipairs(toggleterm.get_all(false)) do
+    value:close()
+  end
+end
 map({ "i", "n", "v", "t" }, "<D-`>", function()
   vim.cmd("stopinsert")
-  term0:toggle()
   if term0:is_open() then
-    term0:set_mode(toggleterm.mode.INSERT)
+    term0:toggle()
+    return
   end
+  hide_all()
+  term0:toggle()
+  term0:set_mode(toggleterm.mode.INSERT)
 end, { desc = "Open terminal" })
 map({ "i", "n", "v", "t" }, "<D-1>", function()
   vim.cmd("stopinsert")
@@ -243,33 +247,68 @@ end, { desc = "Reset scale" })
 
 -- GenComment
 local neogen = require("neogen")
-map({ "n", "v" }, "<leader>cc", function()
+map({ "n" }, "<leader>cc", function()
   neogen.generate({})
 end, { desc = "Gen Comment" })
 
--- telescope bufffers
-map({ "n", "v" }, "<leader>bt", "<cmd>Telescope buffers<cr>", { desc = "Telescope buffers" })
-map({ "n", "v" }, "<leader>sg", function()
-  telescope_builtin.live_grep({
-    glob_pattern = {
-      "!vendor/",
-      "!node_modules/",
+-- telescope
+map({ "n" }, "<leader>sg", function()
+  telescope_pickers.prettyGrepPicker({
+    picker = "live_grep",
+    options = {
+      glob_pattern = {
+        "!vendor/",
+        "!node_modules/",
+      },
     },
   })
 end, { desc = "Telescope Live Grep(ignore vendor/node_modules...)" })
-map({ "n", "v" }, "<leader>sG", function()
+map({ "n" }, "<leader>sG", function()
   local fs_state = neotree_manager.get_state("filesystem")
   if neotree_render.tree_is_visible(fs_state) then
     local dir = get_folder_node(fs_state.tree)
     if dir then
       vim.notify("search in " .. dir.path)
-      telescope_builtin.live_grep({ cwd = dir.path })
+      telescope_pickers.prettyGrepPicker({
+        picker = "live_grep",
+        options = {
+          cwd = dir.path,
+        },
+      })
       return
     end
   end
   vim.notify("search in " .. vim.fn.getcwd())
-  telescope_builtin.live_grep()
+  telescope_pickers.prettyGrepPicker({ picker = "live_grep" })
 end, { desc = "Telescope Live Grep(selected or root dir)" })
+
+-- Document symbols
+map({ "i", "n", "v" }, "<D-m>", function()
+  telescope_pickers.prettyDocumentSymbols({ symbols = require("lazyvim.config").get_kind_filter() })
+end, { desc = "Document symbols" })
+
+-- Find files(root)
+map({ "n" }, "<leader>ff", function()
+  telescope_pickers.prettyFilesPicker({ picker = "find_files" })
+end, { desc = "Find files(root)" })
+
+-- Find files(cwd)
+map({ "n" }, "<leader>fF", function()
+  telescope_pickers.prettyFilesPicker({ picker = "find_files", options = { cwd = vim.fn.getcwd() } })
+end, { desc = "Find files(cwd)" })
+
+-- Git files
+map({ "n" }, "<leader><space>", function()
+  telescope_pickers.prettyFilesPicker({ picker = "git_files" })
+end, { desc = "Find files(cwd)" })
+
+-- Buffer picker
+map({ "n" }, "<leader>fb", function()
+  telescope_pickers.prettyBuffersPicker()
+end, { desc = "Buffers" })
+map({ "n" }, "<leader>bt", function()
+  telescope_pickers.prettyBuffersPicker()
+end, { desc = "Buffers" })
 
 -- upload to remote
 map({ "n", "v", "i" }, "<C-D-u>", function()
@@ -280,7 +319,7 @@ map({ "n", "v", "i" }, "<C-D-d>", function()
 end, { desc = "Sync down from remote" })
 
 -- open file in finder
-map({ "n", "v" }, "<leader>p", function()
+map({ "n" }, "<leader>p", function()
   local fs_state = neotree_manager.get_state("filesystem")
   local path = vim.fn.expand("%:p:h")
   if neotree_render.tree_is_visible(fs_state) then
@@ -291,7 +330,7 @@ map({ "n", "v" }, "<leader>p", function()
 end, { desc = "Open file in Finder" })
 
 -- open file in vscode
-map({ "n", "v" }, "<leader>P", function()
+map({ "n" }, "<leader>P", function()
   local fs_state = neotree_manager.get_state("filesystem")
   local path = vim.fn.expand("%")
   if neotree_render.tree_is_visible(fs_state) then
