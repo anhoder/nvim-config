@@ -5,6 +5,8 @@
 local map = vim.keymap.set
 local toggleterm = require("toggleterm.terminal")
 local telescope_builtin = require("telescope.builtin")
+local telescpe_themes = require("telescope.themes")
+local ivy_theme = telescpe_themes.get_ivy()
 local Util = require("lazyvim.util")
 local neotree_manager = require("neo-tree.sources.manager")
 local neotree_render = require("neo-tree.ui.renderer")
@@ -124,6 +126,7 @@ map({ "n", "v", "i" }, "<A-Right>", "<ScrollWheelRight>", { desc = "Scroll to ri
 -- Select
 map({ "n", "i", "v" }, "<D-S-Left>", "<Esc>v^", { desc = "Select to beginning of line" })
 map({ "n", "i", "v" }, "<D-S-Right>", "<Esc>v$h", { desc = "Select to end of line" })
+map({ "n", "i", "v" }, "<D-a>", "<Esc>ggVG", { desc = "Select all" })
 
 -- Comment
 map({ "i", "n" }, "<D-/>", function()
@@ -284,11 +287,18 @@ end, { desc = "Telescope Live Grep(selected or root dir)" })
 
 -- Document symbols
 map({ "i", "n", "v" }, "<D-m>", function()
-  telescope_pickers.prettyDocumentSymbols({ symbols = require("lazyvim.config").get_kind_filter() })
+  telescope_builtin.lsp_document_symbols(ivy_theme)
+end, { desc = "Document symbols" })
+map({ "i", "n", "v" }, "<D-S-m>", function()
+  -- telescope_pickers.prettyDocumentSymbols({ symbols = require("lazyvim.config").get_kind_filter() })
+  telescope_builtin.lsp_document_symbols(ivy_theme)
 end, { desc = "Document symbols" })
 
 -- Find files(root)
 map({ "n" }, "<leader>ff", function()
+  telescope_pickers.prettyFilesPicker({ picker = "find_files" })
+end, { desc = "Find files(root)" })
+map({ "n" }, "<leader><space>", function()
   telescope_pickers.prettyFilesPicker({ picker = "find_files" })
 end, { desc = "Find files(root)" })
 
@@ -298,9 +308,9 @@ map({ "n" }, "<leader>fF", function()
 end, { desc = "Find files(cwd)" })
 
 -- Git files
-map({ "n" }, "<leader><space>", function()
+map({ "n" }, "<leader>fg", function()
   telescope_pickers.prettyFilesPicker({ picker = "git_files" })
-end, { desc = "Find files(cwd)" })
+end, { desc = "Git files" })
 
 -- Buffer picker
 map({ "n" }, "<leader>fb", function()

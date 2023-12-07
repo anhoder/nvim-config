@@ -263,122 +263,6 @@ function telescopePickers.prettyGrepPicker(pickerAndOptions)
   end
 end
 
-local kind_icons = {
-  Text = "",
-  String = "",
-  Array = "",
-  Object = "󰅩",
-  Namespace = "",
-  Method = "m",
-  Function = "󰊕",
-  Constructor = "",
-  Field = "",
-  Variable = "󰫧",
-  Class = "",
-  Interface = "",
-  Module = "",
-  Property = "",
-  Unit = "",
-  Value = "",
-  Enum = "",
-  Keyword = "",
-  Snippet = "",
-  Color = "",
-  File = "",
-  Reference = "",
-  Folder = "",
-  EnumMember = "",
-  Constant = "",
-  Struct = "",
-  Event = "",
-  Operator = "",
-  TypeParameter = "",
-  Copilot = "🤖",
-  Boolean = "",
-}
-
-function telescopePickers.prettyDocumentSymbols(localOptions)
-  if localOptions ~= nil and type(localOptions) ~= "table" then
-    print("Options must be a table.")
-    return
-  end
-
-  local options = localOptions or {}
-
-  local originalEntryMaker = telescopeMakeEntryModule.gen_from_lsp_symbols(options)
-
-  options.entry_maker = function(line)
-    local originalEntryTable = originalEntryMaker(line)
-
-    local displayer = telescopeEntryDisplayModule.create({
-      separator = " ",
-      items = {
-        { width = fileTypeIconWidth },
-        { width = 20 },
-        { remaining = true },
-      },
-    })
-
-    originalEntryTable.display = function(entry)
-      return displayer({
-        string.format("%s", kind_icons[(entry.symbol_type:lower():gsub("^%l", string.upper))]),
-        { entry.symbol_type:lower(), "TelescopeResultsVariable" },
-        { entry.symbol_name, "TelescopeResultsConstant" },
-      })
-    end
-
-    return originalEntryTable
-  end
-
-  require("telescope.builtin").lsp_document_symbols(options)
-end
-
-function telescopePickers.prettyWorkspaceSymbols(localOptions)
-  if localOptions ~= nil and type(localOptions) ~= "table" then
-    print("Options must be a table.")
-    return
-  end
-
-  local options = localOptions or {}
-
-  local originalEntryMaker = telescopeMakeEntryModule.gen_from_lsp_symbols(options)
-
-  options.entry_maker = function(line)
-    local originalEntryTable = originalEntryMaker(line)
-
-    local displayer = telescopeEntryDisplayModule.create({
-      separator = " ",
-      items = {
-        { width = fileTypeIconWidth },
-        { width = 15 },
-        { width = 30 },
-        { width = nil },
-        { remaining = true },
-      },
-    })
-
-    originalEntryTable.display = function(entry)
-      local tail, _ = telescopePickers.getPathAndTail(entry.filename)
-      local tailForDisplay = tail .. " "
-      local pathToDisplay = telescopeUtilities.transform_path({
-        path_display = { shorten = { num = 2, exclude = { -2, -1 } }, "truncate" },
-      }, entry.value.filename)
-
-      return displayer({
-        string.format("%s", kind_icons[(entry.symbol_type:lower():gsub("^%l", string.upper))]),
-        { entry.symbol_type:lower(), "TelescopeResultsVariable" },
-        { entry.symbol_name, "TelescopeResultsConstant" },
-        tailForDisplay,
-        { pathToDisplay, "TelescopeResultsComment" },
-      })
-    end
-
-    return originalEntryTable
-  end
-
-  require("telescope.builtin").lsp_dynamic_workspace_symbols(options)
-end
-
 function telescopePickers.prettyBuffersPicker(localOptions)
   if localOptions ~= nil and type(localOptions) ~= "table" then
     print("Options must be a table.")
@@ -419,6 +303,74 @@ function telescopePickers.prettyBuffersPicker(localOptions)
   end
 
   require("telescope.builtin").buffers(options)
+end
+
+function telescopePickers.prettyLsp(pickerAndOptions)
+  if type(pickerAndOptions) ~= "table" or pickerAndOptions.picker == nil then
+    print("Incorrect argument format. Correct format is: { picker = 'lsp_references', (optional) options = { ... } }")
+    return
+  end
+
+  local options = pickerAndOptions or {}
+
+  local originalEntryMaker = telescopeMakeEntryModule.gen_from_quickfix(options)
+
+  options.entry_maker = function(e)
+    local originalEntryTable = originalEntryMaker(e)
+
+    local displayer = telescopeEntryDisplayModule.create({
+      separator = " ",
+      items = {
+        { width = fileTypeIconWidth },
+        { width = nil },
+        { width = nil },
+        { remaining = true },
+      },
+    })
+
+    originalEntryTable.display = function(entry)
+      ---- Get File columns data ----
+      -------------------------------
+
+      -- Get the Tail and the Path to display
+      local tail, pathToDisplay = telescopePickers.getPathAndTail(entry.filename)
+
+      -- Get the Icon with its corresponding Highlight information
+      local icon, iconHighlight = telescopeUtilities.get_devicons(tail)
+
+      -- Add an extra space to the tail so that it looks nicely separated from the path
+      local tailForDisplay = tail .. " "
+
+      -- Encode text if necessary
+      local text = options.file_encoding and vim.iconv(entry.text, options.file_encoding, "utf8") or entry.text
+
+      -- INSIGHT: This return value should be a tuple of 2, where the first value is the actual value
+      --          and the second one is the highlight information, this will be done by the displayer
+      --          internally and return in the correct format.
+      return displayer({
+        { icon, iconHighlight },
+        tailForDisplay,
+        { pathToDisplay, "TelescopeResultsComment" },
+        text,
+      })
+    end
+
+    return originalEntryTable
+  end
+
+  if pickerAndOptions.picker == "lsp_references" then
+    require("telescope.builtin").lsp_references(options)
+  elseif pickerAndOptions.picker == "lsp_definitions" then
+    require("telescope.builtin").lsp_definitions(options)
+  elseif pickerAndOptions.picker == "lsp_implementations" then
+    require("telescope.builtin").lsp_implementations(options)
+  elseif pickerAndOptions.picker == "lsp_type_definitions" then
+    require("telescope.builtin").lsp_type_definitions(options)
+  elseif pickerAndOptions.picker == "" then
+    print("Picker was not specified")
+  else
+    print("Picker is not supported by Pretty Lsp Picker")
+  end
 end
 
 -- Return the module for use
