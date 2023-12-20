@@ -6,6 +6,9 @@ return {
     opts = {
       servers = {
         intelephense = {
+          on_init = function(client)
+            client.server_capabilities.documentFormattingProvider = false
+          end,
           settings = {
             intelephense = {
               environment = {

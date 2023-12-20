@@ -6,16 +6,23 @@ vim.g.gruvbox_improved_warnings = 1
 
 return {
   -- add gruvbox
-  -- { "ellisonleao/gruvbox.nvim" },
   { "morhetz/gruvbox" },
-  { "briones-gabriel/darcula-solid.nvim", dependencies = { "rktjmp/lush.nvim" } },
+  {
+    "olimorris/onedarkpro.nvim",
+    opts = {
+      options = {
+        -- transparency = true,
+        cursorline = true,
+      },
+    },
+  },
 
   -- Configure LazyVim to load gruvbox
   {
     "LazyVim/LazyVim",
     opts = {
+      -- colorscheme = "onedark",
       colorscheme = "gruvbox",
-      -- colorscheme = "darcula-solid",
     },
   },
 }

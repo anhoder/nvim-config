@@ -2,6 +2,10 @@
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 -- Add any additional keymaps here
 
+if vim.g.vscode then
+  return
+end
+
 local map = vim.keymap.set
 local toggleterm = require("toggleterm.terminal")
 local telescope_builtin = require("telescope.builtin")
@@ -375,4 +379,26 @@ map(
   "<S-ScrollWheelRight>",
   "<ScrollWheelRight>",
   { desc = "Disabled", noremap = true }
+)
+
+-- Aerial
+map({ "n" }, "<leader>a", "<cmd>AerialToggle!<CR>", { desc = "Aerial" })
+
+-- notify cwd
+map({ "n" }, "<leader>cp", function()
+  vim.notify(vim.fn.expand("%"))
+end, { desc = "Display cur file path" })
+
+-- add quotation
+map(
+  { "v" },
+  "'",
+  "\"+xi'<cmd>set paste<cr><C-r>+<cmd>set nopaste<cr>'",
+  { desc = "Add single quotation", noremap = true }
+)
+map(
+  { "v" },
+  '"',
+  '"+xi"<cmd>set paste<cr><C-r>+<cmd>set nopaste<cr>"',
+  { desc = "Add double quotation", noremap = true }
 )

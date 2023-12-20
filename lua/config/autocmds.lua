@@ -3,7 +3,7 @@
 -- Add any additional autocmds here
 
 local focus = vim.api.nvim_create_augroup("FocusDisable", { clear = true })
-local ignore_filetypes = { "neo-tree" }
+local ignore_filetypes = { "neo-tree", "aerial" }
 vim.api.nvim_create_autocmd("FileType", {
   group = focus,
   callback = function(_)
@@ -11,6 +11,10 @@ vim.api.nvim_create_autocmd("FileType", {
       vim.b.focus_disable = true
       return
     end
+    -- if vim.bo.filetype ~= "notify" and vim.bo.filetype ~= "noice" then
+    --   vim.notify(vim.bo.filetype)
+    -- end
+
     if string.sub(vim.bo.filetype, 1, 3) == "dap" then
       vim.b.focus_disable = true
       return
@@ -41,7 +45,7 @@ vim.api.nvim_create_autocmd({ "User" }, {
   pattern = "PersistedLoadPost",
   group = autopin_group,
   callback = function()
-    local actions = require("hbac.command.actions")
-    actions.pin_all()
+    require("hbac.command.actions").pin_all()
+    require("dap.ext.vscode").load_launchjs()
   end,
 })
