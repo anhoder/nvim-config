@@ -50,6 +50,15 @@ end
 
 -- n normal, i insert, v visual, s select, c command, t terminal, o operator pending
 
+if vim.g.neovide then
+  map({ "n", "i", "v", "t" }, "<D-n>", function()
+    os.execute("neovide")
+  end, { desc = "New neovide instance" })
+  map({ "n", "i", "v", "t" }, "<C-D-f>", function()
+    vim.g.neovide_fullscreen = not vim.g.neovide_fullscreen
+  end, { desc = "Toggle neovide fullscreen" })
+end
+
 -- Resize window using <ctrl> arrow keys
 map({ "n", "i", "v", "t" }, "<C-D-Up>", "<cmd>resize +2<cr>", { desc = "Increase window height" })
 map({ "n", "i", "v", "t" }, "<C-D-Down>", "<cmd>resize -2<cr>", { desc = "Decrease window height" })
@@ -390,15 +399,7 @@ map({ "n" }, "<leader>cp", function()
 end, { desc = "Display cur file path" })
 
 -- add quotation
-map(
-  { "v" },
-  "'",
-  "\"+xi'<cmd>set paste<cr><C-r>+<cmd>set nopaste<cr>'",
-  { desc = "Add single quotation", noremap = true }
-)
-map(
-  { "v" },
-  '"',
-  '"+xi"<cmd>set paste<cr><C-r>+<cmd>set nopaste<cr>"',
-  { desc = "Add double quotation", noremap = true }
-)
+map("v", "'", "\"+xi'<cmd>set paste<cr><C-r>+<cmd>set nopaste<cr>'", { desc = "Add single quotation", noremap = true })
+map("v", '"', '"+xi"<cmd>set paste<cr><C-r>+<cmd>set nopaste<cr>"', { desc = "Add double quotation", noremap = true })
+map("s", "'", "''<cmd>norm! h<cr>", { desc = "Avoiding effect", noremap = true })
+map("s", '"', '""<cmd>norm! h<cr>', { desc = "Avoiding effect", noremap = true })
