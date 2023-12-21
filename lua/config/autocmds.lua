@@ -2,6 +2,7 @@
 -- Default autocmds that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/autocmds.lua
 -- Add any additional autocmds here
 
+-- auto focus
 local focus = vim.api.nvim_create_augroup("FocusDisable", { clear = true })
 local ignore_filetypes = { "neo-tree", "aerial" }
 vim.api.nvim_create_autocmd("FileType", {
@@ -24,6 +25,18 @@ vim.api.nvim_create_autocmd("FileType", {
   desc = "Disable focus autoresize for FileType",
 })
 
+-- auto format
+local auto_format = vim.api.nvim_create_augroup("AutoFormat", { clear = true })
+local ignore_format_filetypes = { "php" }
+vim.api.nvim_create_autocmd({ "FileType" }, {
+  group = auto_format,
+  pattern = ignore_format_filetypes,
+  callback = function()
+    vim.b.autoformat = false
+  end,
+})
+
+-- vim startup
 local startup = vim.api.nvim_create_augroup("startup", { clear = true })
 vim.api.nvim_create_autocmd("VimEnter", {
   group = startup,
@@ -40,6 +53,7 @@ vim.api.nvim_create_autocmd("BufEnter", {
   end,
 })
 
+-- auto pin
 local autopin_group = vim.api.nvim_create_augroup("autopin", {})
 vim.api.nvim_create_autocmd({ "User" }, {
   pattern = "PersistedLoadPost",

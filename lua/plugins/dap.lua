@@ -21,7 +21,7 @@ return {
       "rcarriga/nvim-dap-ui",
       -- stylua: ignore
       keys = {
-        { "<leader>du", function() 
+        { "<leader>du", function()
           dapui.toggle({ })
           vim.cmd("Neotree close") -- close neotree
         end, desc = "Dap UI", mode = {"n", "v"} },

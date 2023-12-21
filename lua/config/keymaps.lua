@@ -403,3 +403,8 @@ map("v", "'", "\"+xi'<cmd>set paste<cr><C-r>+<cmd>set nopaste<cr>'", { desc = "A
 map("v", '"', '"+xi"<cmd>set paste<cr><C-r>+<cmd>set nopaste<cr>"', { desc = "Add double quotation", noremap = true })
 map("s", "'", "''<cmd>norm! h<cr>", { desc = "Avoiding effect", noremap = true })
 map("s", '"', '""<cmd>norm! h<cr>', { desc = "Avoiding effect", noremap = true })
+
+-- git blame
+map("n", "<leader>ghb", function()
+  vim.cmd("Git blame")
+end, { desc = "Blame Line", noremap = true })
