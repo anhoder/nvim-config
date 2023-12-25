@@ -11,7 +11,7 @@ return {
     },
     current_line_blame_formatter = "<author>, <author_time:%Y/%m/%d %H:%M>, <summary>",
     on_attach = function(bufnr)
-      vim.cmd("highlight gitsignscurrentlineblame guifg=#686868")
+      vim.cmd("highlight gitsignscurrentlineblame guifg=#999999")
 
       local gs = package.loaded.gitsigns
 
