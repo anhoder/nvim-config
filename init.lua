@@ -23,7 +23,7 @@ vim.g.minimap_auto_start_win_enter = 1
 
 vim.g.neovide_scale_factor = 1.0
 vim.g.neovide_transparency = 0.6
-vim.g.neovide_background_color = "#353535" .. "99"
+-- vim.g.neovide_background_color = "#353535" .. "ff"
 vim.g.neovide_scroll_animation_far_lines = 0
 vim.g.neovide_input_ime = true
 
