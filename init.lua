@@ -19,6 +19,13 @@ vim.opt.pumblend = 10
 vim.opt.mousemoveevent = true
 vim.opt.termguicolors = true
 
+vim.diagnostic.config({
+  underline = true,
+  float = {
+    source = true,
+  },
+})
+
 vim.g.minimap_auto_start = 1
 vim.g.minimap_auto_start_win_enter = 1
 

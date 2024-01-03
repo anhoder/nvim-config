@@ -25,6 +25,13 @@ return {
         },
       })
       local cfg = require("go.lsp").config()
+      if cfg then
+        cfg.settings.gopls.analyses = {
+          ST1000 = false,
+          ST1003 = false,
+          SA4006 = false,
+        }
+      end
       require("lspconfig").gopls.setup(cfg)
     end,
     event = { "CmdlineEnter" },
