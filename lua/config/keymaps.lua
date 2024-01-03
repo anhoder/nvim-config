@@ -8,6 +8,7 @@ end
 
 local map = vim.keymap.set
 local toggleterm = require("toggleterm.terminal")
+local telescope = require("telescope")
 local telescope_builtin = require("telescope.builtin")
 local telescpe_themes = require("telescope.themes")
 local ivy_theme = telescpe_themes.get_ivy()
@@ -31,6 +32,13 @@ local musicfox = Terminal:new({
 local lazygit = Terminal:new({
   cmd = "lazygit",
   display_name = "lazygit",
+  hidden = true,
+  direction = "float",
+  float_opts = { border = "curved" },
+})
+local gitdiff = Terminal:new({
+  cmd = "git diff",
+  display_name = "gitdiff",
   hidden = true,
   direction = "float",
   float_opts = { border = "curved" },
@@ -230,6 +238,14 @@ map("n", "<leader>gg", function()
   end
 end, { desc = "Run lazygit" })
 
+-- gitdiff
+map("n", "<leader>gd", function()
+  gitdiff:toggle()
+  if gitdiff:is_open() then
+    gitdiff:set_mode(toggleterm.mode.INSERT)
+  end
+end, { desc = "Run git diff" })
+
 -- fork
 map("n", "<leader>gf", function()
   os.execute("fork " .. Util.root())
@@ -246,20 +262,15 @@ end
 map({ "i", "n", "v", "s", "t", "o" }, "<D-=>", change_font_size(1), { desc = "Increase font size" })
 map({ "i", "n", "v", "s", "t", "o" }, "<D-->", change_font_size(-1), { desc = "Decrease font size" })
 map({ "i", "n", "v", "s", "t", "o" }, "<D-0>", function()
-  vim.cmd("set guifont=" .. vim.g.guifont .. ":h" .. 15)
-end, { desc = "Decrease font size" })
-
--- Scale
-local change_scale_factor = function(delta)
-  return function()
-    vim.g.neovide_scale_factor = vim.g.neovide_scale_factor + delta
-  end
-end
-map({ "i", "n", "v", "s", "t", "o" }, "<C-=>", change_scale_factor(0.1), { desc = "Increase scale" })
-map({ "i", "n", "v", "s", "t", "o" }, "<C-->", change_scale_factor(-0.1), { desc = "Decrease scale" })
+  local font = string.gsub(vim.g.guifont, " ", "\\ ")
+  vim.cmd("set guifont=" .. font .. ":h" .. 15)
+end, { desc = "Reset font size" })
+map({ "i", "n", "v", "s", "t", "o" }, "<C-=>", change_font_size(1), { desc = "Increase font size" })
+map({ "i", "n", "v", "s", "t", "o" }, "<C-->", change_font_size(-1), { desc = "Decrease font size" })
 map({ "i", "n", "v", "s", "t", "o" }, "<C-0>", function()
-  vim.g.neovide_scale_factor = 1.0
-end, { desc = "Reset scale" })
+  local font = string.gsub(vim.g.guifont, " ", "\\ ")
+  vim.cmd("set guifont=" .. font .. ":h" .. 15)
+end, { desc = "Reset font size" })
 
 -- GenComment
 local neogen = require("neogen")
@@ -300,11 +311,13 @@ end, { desc = "Telescope Live Grep(selected or root dir)" })
 
 -- Document symbols
 map({ "i", "n", "v" }, "<D-m>", function()
-  telescope_builtin.lsp_document_symbols(ivy_theme)
+  -- telescope_builtin.lsp_document_symbols(ivy_theme)
+  telescope.extensions.aerial.aerial(ivy_theme)
 end, { desc = "Document symbols" })
 map({ "i", "n", "v" }, "<D-S-m>", function()
   -- telescope_pickers.prettyDocumentSymbols({ symbols = require("lazyvim.config").get_kind_filter() })
-  telescope_builtin.lsp_document_symbols(ivy_theme)
+  -- telescope_builtin.lsp_document_symbols(ivy_theme)
+  telescope.extensions.aerial.aerial(ivy_theme)
 end, { desc = "Document symbols" })
 
 -- Find files(root)

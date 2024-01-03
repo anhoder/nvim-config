@@ -32,6 +32,7 @@ return {
       opts = {},
       config = function(_, opts)
         -- setup dap config by VsCode launch.json file
+        require("nvim-dap-projects").search_project_config()
         dapvscode.load_launchjs()
         local dap = require("dap")
         dapui.setup(opts)

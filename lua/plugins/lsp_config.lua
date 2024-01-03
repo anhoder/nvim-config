@@ -24,6 +24,13 @@ return {
           },
           autostart = false,
         },
+        gopls = {
+          settings = {
+            gopls = {
+              buildFlags = { "-tags=wireinject" },
+            },
+          },
+        },
       },
     },
   },
