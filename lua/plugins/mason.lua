@@ -1,34 +1,34 @@
 return {
-  -- "williamboman/mason.nvim",
-  -- opts = {
-  --   ensure_installed = {
-  --     "actionlint",
-  --     "ansible-language-server",
-  --     "ansible-lint",
-  --     "antlers-language-server",
-  --     "black",
-  --     "bash-language-server",
-  --     "blade-formatter",
-  --     "docker-compose-language-service",
-  --     "dockerfile-language-server",
-  --     "dot-language-server",
-  --     "eslint_d",
-  --     "flake8",
-  --     "hadolint",
-  --     "html-lsp",
-  --     "intelephense",
-  --     "phpactor",
-  --     "nginx-language-server",
-  --     "php-debug-adapter",
-  --     "phpstan",
-  --     "pint",
-  --     "prettierd",
-  --     "pyright",
-  --     "rustywind",
-  --     "shellcheck",
-  --     "shfmt",
-  --     "stylua",
-  --     "tailwindcss-language-server",
-  --   },
-  -- },
+  {
+    "mason.nvim",
+  },
+  {
+    "mason-lspconfig.nvim",
+  },
+  {
+    "anhoder/go.nvim",
+    dependencies = { -- optional packages
+      "ray-x/guihua.lua",
+      "neovim/nvim-lspconfig",
+      "nvim-treesitter/nvim-treesitter",
+      "mason.nvim",
+      "mason-lspconfig.nvim",
+    },
+    config = function()
+      require("go").setup({
+        lsp_cfg = false,
+        icons = false,
+        build_tags = "wireinject",
+        lsp_keymaps = false,
+        diagnostic = {
+          hdlr = true,
+        },
+      })
+      local cfg = require("go.lsp").config()
+      require("lspconfig").gopls.setup(cfg)
+    end,
+    event = { "CmdlineEnter" },
+    ft = { "go", "gomod" },
+    build = ':lua require("go.install").update_all_sync()', -- if you need to install/update all binaries
+  },
 }

@@ -7,6 +7,7 @@ vim.g.gruvbox_improved_warnings = 1
 return {
   -- add gruvbox
   { "morhetz/gruvbox" },
+  { "rebelot/kanagawa.nvim" },
   {
     "olimorris/onedarkpro.nvim",
     opts = {
@@ -23,6 +24,7 @@ return {
     opts = {
       -- colorscheme = "onedark",
       colorscheme = "gruvbox",
+      -- colorscheme = "kanagawa",
     },
   },
 }

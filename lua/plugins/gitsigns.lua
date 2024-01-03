@@ -7,7 +7,7 @@ return {
       virt_text_pos = "eol", -- 'eol' | 'overlay' | 'right_align'
       delay = 0,
       ignore_whitespace = false,
-      virt_text_priority = 100,
+      virt_text_priority = 5000,
     },
     current_line_blame_formatter = "<author>, <author_time:%Y/%m/%d %H:%M>, <summary>",
     on_attach = function(bufnr)
