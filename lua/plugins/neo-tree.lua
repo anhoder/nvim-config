@@ -1,6 +1,17 @@
 return {
   "nvim-neo-tree/neo-tree.nvim",
-  dependencies = { "3rd/image.nvim" },
+  branch = "v3.x",
+  dependencies = {
+    "nvim-lua/plenary.nvim",
+    "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
+    "MunifTanjim/nui.nvim",
+    -- {
+    --   "3rd/image.nvim",
+    --   opts = {
+    --     backend = "kitty",
+    --   },
+    -- },
+  },
   opts = {
     enable_normal_mode_for_inputs = true,
     filesystem = {
@@ -26,7 +37,7 @@ return {
     },
     window = {
       mappings = {
-        ["P"] = { "toggle_preview", config = { use_float = true, use_image_nvim = true } },
+        ["P"] = { "toggle_preview", config = { use_float = true } },
       },
     },
   },

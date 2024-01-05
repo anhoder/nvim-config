@@ -43,8 +43,8 @@ vim.g.neovide_scroll_animation_far_lines = 0
 vim.g.neovide_input_ime = true
 
 -- vim.g.neovide_hide_mouse_when_typing = true
-vim.g.neovide_cursor_animation_length = 0.15
-vim.g.neovide_cursor_trail_size = 0.1
+vim.g.neovide_cursor_animation_length = 0.05
+vim.g.neovide_cursor_trail_size = 0.0
 vim.g.neovide_refresh_rate_idle = 60
 vim.g.neovide_confirm_quit = true
 vim.g.neovide_remember_window_size = true
