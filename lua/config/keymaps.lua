@@ -10,8 +10,8 @@ local map = vim.keymap.set
 local toggleterm = require("toggleterm.terminal")
 local telescope = require("telescope")
 local telescope_builtin = require("telescope.builtin")
-local telescpe_themes = require("telescope.themes")
-local ivy_theme = telescpe_themes.get_ivy()
+local telescope_themes = require("telescope.themes")
+local ivy_theme = telescope_themes.get_ivy()
 local Util = require("lazyvim.util")
 local neotree_manager = require("neo-tree.sources.manager")
 local neotree_render = require("neo-tree.ui.renderer")
@@ -79,15 +79,15 @@ map({ "n", "i", "v", "t" }, "<C-D-S-Left>", "<cmd>vertical resize -2<cr>", { des
 map({ "n", "i", "v", "t" }, "<C-D-S-Right>", "<cmd>vertical resize +2<cr>", { desc = "Increase window width" })
 
 -- Move to window using the <ctrl> hjkl keys
-map({ "n", "i", "v", "t" }, "<C-A-Left>", "<Esc><Esc><C-w>h", { desc = "Go to left window", remap = true })
-map({ "n", "i", "v", "t" }, "<C-A-Down>", "<Esc><Esc><C-w>j", { desc = "Go to lower window", remap = true })
-map({ "n", "i", "v", "t" }, "<C-A-Up>", "<Esc><Esc><C-w>k", { desc = "Go to upper window", remap = true })
-map({ "n", "i", "v", "t" }, "<C-A-Right>", "<Esc><Esc><C-w>l", { desc = "Go to right window", remap = true })
+map({ "n", "i", "v", "t" }, "<C-A-Left>", "<Esc><Esc><C-w>h", { desc = "Go to left window", noremap = true })
+map({ "n", "i", "v", "t" }, "<C-A-Down>", "<Esc><Esc><C-w>j", { desc = "Go to lower window", noremap = true })
+map({ "n", "i", "v", "t" }, "<C-A-Up>", "<Esc><Esc><C-w>k", { desc = "Go to upper window", noremap = true })
+map({ "n", "i", "v", "t" }, "<C-A-Right>", "<Esc><Esc><C-w>l", { desc = "Go to right window", noremap = true })
 
-map({ "n", "i", "v", "t" }, "<C-A-S-Left>", "<Esc><C-w>h", { desc = "Go to left window", remap = true })
-map({ "n", "i", "v", "t" }, "<C-A-S-Down>", "<Esc><C-w>j", { desc = "Go to lower window", remap = true })
-map({ "n", "i", "v", "t" }, "<C-A-S-Up>", "<Esc><C-w>k", { desc = "Go to upper window", remap = true })
-map({ "n", "i", "v", "t" }, "<C-A-S-Right>", "<Esc><C-w>l", { desc = "Go to right window", remap = true })
+map({ "n", "i", "v", "t" }, "<C-A-S-Left>", "<Esc><C-w>h", { desc = "Go to left window", noremap = true })
+map({ "n", "i", "v", "t" }, "<C-A-S-Down>", "<Esc><C-w>j", { desc = "Go to lower window", noremap = true })
+map({ "n", "i", "v", "t" }, "<C-A-S-Up>", "<Esc><C-w>k", { desc = "Go to upper window", noremap = true })
+map({ "n", "i", "v", "t" }, "<C-A-S-Right>", "<Esc><C-w>l", { desc = "Go to right window", noremap = true })
 
 -- Close window
 map({ "n", "i", "v", "t" }, "<D-w>", function()
@@ -112,8 +112,8 @@ map({ "n", "i", "v", "s", "c" }, "<D-y>", "<cmd>redo<cr>", { desc = "Redo" })
 
 -- Dup one line
 --
-map({ "n", "v" }, "<D-d>", "<Esc>yyp", { desc = "Paste", noremap = true })
-map({ "i" }, "<D-d>", "<Esc>yypi", { desc = "Paste", noremap = true })
+map({ "n", "v" }, "<D-d>", "<cmd>normal yyp<cr>", { desc = "Paste", noremap = true })
+map({ "i" }, "<D-d>", "<cmd>normal yypi<cr>", { desc = "Paste", noremap = true })
 
 -- Copy, paste, cut
 map({ "n", "v" }, "<D-c>", '"+y', { desc = "Copy", noremap = true })
@@ -421,3 +421,7 @@ map("s", '"', '""<cmd>norm! h<cr>', { desc = "Avoiding effect", noremap = true }
 map("n", "<leader>ghb", function()
   vim.cmd("Git blame")
 end, { desc = "Blame Line", noremap = true })
+
+-- mouse go tnormalo
+map({ "n", "i", "v" }, "<D-LeftMouse>", "<LeftMouse><cmd>normal gd<cr>", { desc = "Jump to", noremap = true })
+map({ "n", "i", "v" }, "<RightMouse>", "<LeftMouse><cmd>normal K<cr>", { desc = "Jump to", noremap = true })
