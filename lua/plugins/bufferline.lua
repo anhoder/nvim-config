@@ -6,8 +6,8 @@ return {
     options = {
       style_preset = bufferline.style_preset.default,
       themable = true,
-      separator_style = "slope",
-      sort_by = "id",
+      separator_style = "thick",
+      sort_by = "insert_at_end",
       hover = {
         enabled = true,
         delay = 50,
