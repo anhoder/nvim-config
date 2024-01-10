@@ -15,7 +15,7 @@ return {
       },
       name_formatter = function(buf)
         if state.is_pinned(buf.bufnr) then
-          return "*" .. buf.name
+          return "󰐃 " .. buf.name
         end
         return buf.name
       end,
