@@ -17,31 +17,34 @@ local neotree_manager = require("neo-tree.sources.manager")
 local neotree_render = require("neo-tree.ui.renderer")
 local state = require("hbac.state")
 local telescope_pickers = require("config.telescope_pickers")
+
 local Terminal = toggleterm.Terminal
+local float_opts = {
+  border = "curved",
+  width = function()
+    return math.floor(vim.o.columns * 0.95)
+  end,
+  height = function()
+    return math.floor(vim.o.lines * 0.95)
+  end,
+}
 local term0 = Terminal:new({ display_name = "term0", direction = "horizontal" })
-local term1 = Terminal:new({ display_name = "term1", direction = "float", float_opts = { border = "curved" } })
-local term2 = Terminal:new({ display_name = "term2", direction = "float", float_opts = { border = "curved" } })
-local term3 = Terminal:new({ display_name = "term3", direction = "float", float_opts = { border = "curved" } })
+local term1 = Terminal:new({ display_name = "term1", direction = "float", float_opts = float_opts })
+local term2 = Terminal:new({ display_name = "term2", direction = "float", float_opts = float_opts })
+local term3 = Terminal:new({ display_name = "term3", direction = "float", float_opts = float_opts })
 local musicfox = Terminal:new({
   cmd = "musicfox",
   display_name = "musicfox",
   hidden = true,
   direction = "float",
-  float_opts = { border = "curved" },
+  float_opts = float_opts,
 })
 local lazygit = Terminal:new({
   cmd = "lazygit",
   display_name = "lazygit",
   hidden = true,
   direction = "float",
-  float_opts = { border = "curved" },
-})
-local gitdiff = Terminal:new({
-  cmd = "git diff",
-  display_name = "gitdiff",
-  hidden = true,
-  direction = "float",
-  float_opts = { border = "curved" },
+  float_opts = float_opts,
 })
 local function get_folder_node(tree, node)
   if not tree then
@@ -237,14 +240,6 @@ map("n", "<leader>gg", function()
     lazygit:set_mode(toggleterm.mode.INSERT)
   end
 end, { desc = "Run lazygit" })
-
--- gitdiff
-map("n", "<leader>gd", function()
-  gitdiff:toggle()
-  if gitdiff:is_open() then
-    gitdiff:set_mode(toggleterm.mode.INSERT)
-  end
-end, { desc = "Run git diff" })
 
 -- fork
 map("n", "<leader>gf", function()

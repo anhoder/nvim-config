@@ -6,6 +6,7 @@ return {
     opts = {
       servers = {
         intelephense = {
+          single_file_support = true,
           settings = {
             intelephense = {
               environment = {
@@ -16,6 +17,7 @@ return {
           autostart = true,
         },
         phpactor = {
+          single_file_support = true,
           filetypes = { "php" },
           init_options = {
             -- ["language_server.diagnostics_on_open"] = false,
@@ -28,6 +30,7 @@ return {
           autostart = false,
         },
         gopls = {
+          single_file_support = true,
           settings = {
             gopls = {
               buildFlags = { "-tags=wireinject" },
