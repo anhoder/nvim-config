@@ -114,7 +114,6 @@ map({ "n", "i", "v", "s", "c" }, "<D-z>", "<cmd>undo<cr>", { desc = "Undo" })
 map({ "n", "i", "v", "s", "c" }, "<D-y>", "<cmd>redo<cr>", { desc = "Redo" })
 
 -- Dup one line
---
 map({ "n", "v" }, "<D-d>", "<cmd>normal yyp<cr>", { desc = "Paste", noremap = true })
 map({ "i" }, "<D-d>", "<cmd>normal yypi<cr>", { desc = "Paste", noremap = true })
 
@@ -415,7 +414,7 @@ map("s", '"', '""<cmd>norm! h<cr>', { desc = "Avoiding effect", noremap = true }
 -- git blame
 map("n", "<leader>ghb", function()
   vim.cmd("Git blame")
-end, { desc = "Blame Line", noremap = true })
+end, { desc = "Git Blame", noremap = true })
 
 -- mouse go tnormalo
 map({ "n", "i", "v" }, "<D-LeftMouse>", "<LeftMouse><cmd>normal gd<cr>", { desc = "Jump to", noremap = true })
